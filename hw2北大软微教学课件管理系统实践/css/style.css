@@ -1,0 +1,19 @@
+/*-----------------------------全局样式-------------------------------------*/
+*{margin:0;padding: 0}
+li{list-style:none}
+img{vertical-align:top;border:none}
+legend{display:none}
+fieldset{border:none}
+a{text-decoration:none}
+a:hover,a:active{text-decoration:none}
+.clear {clear: both; }
+/*-----------------------------登录页面-------------------------------------*/
+body{font:12px/1.5 Microsoft YaHei;position:relative;margin:0 auto;color:#000}
+#container{
+width:960px;
+box-shadow: 0 0 15px #999999;
+margin: 0 auto;
+overflow-x: hidden;
+position: relative;
+}
+.login{background:#0c7fc2 url(../images/bj.png) no-repeat center top ;height:600px}
