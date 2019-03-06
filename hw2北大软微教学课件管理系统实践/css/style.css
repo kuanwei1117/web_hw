@@ -16,4 +16,5 @@ margin: 0 auto;
 overflow-x: hidden;
 position: relative;
 }
-.login{background:#0c7fc2 url(../images/bj.png) no-repeat center top ;height:600px}
+.login{background:rgb(79, 231, 33) url(../images/bj.png) no-repeat center top ;height:600px}
+.login_hd{background:url(../images/logo.png) no-repeat;float:left;margin:20px 20px 0;width:423px;height:57px;}
