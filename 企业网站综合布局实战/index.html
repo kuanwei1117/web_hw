@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>主页</title>
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+    <script type="text/javascript" src="js/setHomeSetFav.js"  charset="gb2312" ></script>
+    <script type="text/javascript" src="js/myfocus-2.0.1.min.js"></script>
+    <script type="text/javascript" src="js/mf-pattern/mF_fancy.js"></script>
+    <link rel="stylesheet" href="js/mf-pattern/mF_fancy.css" type="text/css">
+    <script type="text/javascript">
+    myFocus.set({
+    id:"picBox"})
+    </script>
+  </head>
+  <body>
+
+    <div class="top">
+      <div class="top-content">
+        <ul>
+          <li><a href="#">联络我们</a></li>
+          <li><a href="#" onclick="AddFavorite(window.location,document.title)">加入收藏</a></li>
+          <li><a href="#" onclick="SetHome(window.location)">设为首页</a></li>
+        </ul>
+      </div>
+    </div><!--top结束-->
+
+    <div class="wrap">
+      <div class="logo">
+        <div class="logo-left">
+          <img src="images/logo.jpg" alt="mooc">
+        </div>
+        <div class="logo-right">
+          <img src="images/tel.jpg" alt="tel"><span class="tel">24 hours:1234-5678</span>
+        </div>
+      </div> <!-- logo over -->
+
+      <div class="nav-left"></div>
+        <div class="nav-mid">
+          <div class="nav-mid-left">
+            <ul>
+              <li><a href="#">index</a></li>
+              <li><a href="list.html">about</a></li>
+              <li><a href="list.html">news</a></li>
+              <li><a href="list.html">class</a></li>
+              <li><a href="list.html">online</a></li>
+              <li><a href="list.html">join</a></li>
+            </ul>
+          </div>
+          <div class="nav-mid-right">
+            <form  action="" method="post">
+              <input type="text"/ class="search-text">
+            </form>
+          </div>
+        </div><!-- nav-middle over -->
+        <div class="nav-right"></div>
+      </div><!-- nav over -->
+
+      <div class="ad" id="picBox">
+        <div class="loading"><img src="images/loading.gif" alt="loading"></div>
+        <div class="pic">
+        <ul>
+          <li><img src="images/ad2.jpg" alt="1"></li>
+          <li><img src="images/ad3.jpg" alt="1"></li>
+          <li><img src="images/ad4.jpg" alt="1"></li>
+        </ul>
+        </div>
+      </div><!--ad over  -->
+
+      <div class="main">
+        <div class="news">
+          <div class="title">
+            <h2 class="title-left">新聞中心</h2><span class="title-right"><a href="news.html" >More&gt;&gt;</a></span>
+          </div>  <!--title over-->
+          <div class="pic-news">
+            <img src="images/news.jpg" alt="news"><h2><a href="#">我愛安翹鼻活動</a></h2><p>活動時間：5/20 <br> 審查時間：5/21 <br><a href="#">Learn More&gt;&gt;</a></p>
+          </div>  <!--pic-news-->
+          <div class="news-list">
+            <ul>
+              <li><a href="news.html">12345A</a><sapn class="date">20180101</sapn></li>
+              <li><a href="news.html">12345B</a><sapn class="date">20180101</sapn></li>
+              <li><a href="news.html">12345C</a><sapn class="date">20180101</sapn></li>
+              <li><a href="news.html">12345D</a><sapn class="date">20180101</sapn></li>
+            </ul>
+          </div>  <!--news-list over-->
+        </div>  <!--news over-->
+        <div class="course">
+          <div class="title">
+            <h2 class="title-left">course center</h2><span class="title-right"><a href="#">Learn More&gt;&gt;</a></span>
+          </div>  <!--title over-->
+          <div class="course-pic">
+            <img src="images/css.jpg" alt="css"><h2><a href="#">css gogogo</a></h2>
+            <p>aaaaaaaaaaaaaaaaaaaaaaaa<br>bbbbbbbbbbbbbbbbbbbbbb </p>
+          </div>  <!--course-picr-->
+          <div class="course-type">
+            <ul>
+              <li>1111</li>
+              <li>2222</li>
+              <li>3333</li>
+              <li>4444</li>
+            </ul>
+          </div> <!--course-type-->
+        </div> <!--course over-->
+        <div class="sidebar">
+          <div class="video">
+            <div class="title"><h2 class="title-left">MEDIA FOCUS</h2></div>
+            <div class="video-content"><embed src='http://player.youku.com/player.php/sid/XMjg5MTk0Njk0MA==/v.swf' allowFullScreen='true' quality='high' width='220' height='140' align='middle' allowScriptAccess='always' type='application/x-shockwave-flash'></embed></div>
+          </div> <!--video over-->
+          <div class="sidebar-ad">
+            <img src="images/app.jpg" alt="app">
+          </div> <!--sidebar-ad over-->
+        </div>  <!--sidebar over-->
+      </div><!--main over-->
+    </div><!-- wrap over -->
+
+    <div class="copyright">
+      <div class="copyright-content">
+        <ul>
+          <li><a href="#">關於</a>
+            <ul>
+              <li><a href="#">1111</a></li>
+              <li><a href="#">2222</a></li>
+              <li><a href="#">3333</a></li>
+              <li><a href="#">4444</a></li>
+            </ul>
+          </li>
+          <li><a href="#">課程</a>
+            <ul>
+              <li><a href="#">1111</a></li>
+              <li><a href="#">2222</a></li>
+              <li><a href="#">3333</a></li>
+              <li><a href="#">4444</a></li>
+            </ul>
+          </li>
+          <li><a href="#">留言</a>
+            <ul>
+              <li><a href="#">1111</a></li>
+              <li><a href="#">2222</a></li>
+              <li><a href="#">3333</a></li>
+              <li><a href="#">4444</a></li>
+            </ul>
+          </li>
+          <li><a href="#">關注</a>
+            <ul>
+              <li><a href="#">1111</a></li>
+              <li><a href="#">2222</a></li>
+              <li><a href="#">3333</a></li>
+              <li><a href="#">4444</a></li>
+            </ul>
+          </li>
+          <li><a href="#"><img src="images/weixin.png" alt="weixin">wechat關注</a>
+            <ul>
+              <li><img src="images/qrcode.jpg" alt="qr"></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+
+  </body>
+</html>

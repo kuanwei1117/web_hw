@@ -1,0 +1,338 @@
+@font-face {font-family: 'webfont';
+    src: url('https://at.alicdn.com/t/webfont_ipcljfaohob.eot'); /* IE9*/
+    src: url('https://at.alicdn.com/t/webfont_ipcljfaohob.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('https://at.alicdn.com/t/webfont_ipcljfaohob.woff') format('woff'), /* chrome、firefox */
+    url('https://at.alicdn.com/t/webfont_ipcljfaohob.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('https://at.alicdn.com/t/webfont_ipcljfaohob.svg#NotoSansHans-DemiLight') format('svg'); /* iOS 4.1- */
+  }
+
+*{
+  /* 将预设样式清除 */
+  margin: 0;
+  padding: 0;
+  /* 所有字体 */
+  font-size: 12px;
+
+}
+
+body{
+  background-color: #F5F5F5;
+  font-family: "webfont",Arial, Helvetica, sans-serif;
+}
+
+.top{
+  width: 100%;
+  height: 27px;
+  background: url(../images/top_bg.jpg) repeat-x;
+}
+
+/* 让顶部内容居中*/
+.top-content{
+  width: 1000px;
+  margin: 0 auto;
+}
+
+/* 更改列表符号*/
+.top-content li{
+  list-style-image: url(../images/li_bg.gif);
+  float: right;
+/*拉开每个列表距离*/
+  width: 70px;
+/* 让文字在盒子里居中 */
+  line-height: 27px;
+}
+
+/* 让连结变颜色 */
+.top-content a:link,a:visited{
+  color: #8E8E8E;
+  /* 不要下画线 */
+  text-decoration: none;
+}
+
+.top-content a:hover,a:active{
+  color: rgb(240, 0, 14);
+  text-decoration: none;
+}
+
+.wrap{
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.logo{
+  height: 80px;
+  background-color: rgb(255, 255, 255);
+}
+
+.logo-left{
+  width: 200px;
+  float: left;
+  height: 80px;
+}
+
+.logo-right{
+  width: 300px;
+  float: right;
+  height: 28px;
+  margin-top: 30px;
+  color: #8E8E8E;
+}
+
+.logo-right img{
+  /*垂直的对齐方式*/
+  vertical-align: middle;;
+  margin-right: 10px;
+}
+
+.tel{
+  font-size: 16px;
+  color: rgb(221, 10, 64);
+}
+
+.nav{
+  height: 40px;
+}
+
+.nav-left{
+  width: 10px;
+  background: url(../images/nav_left.jpg) no-repeat;
+  float: left;
+}
+
+.nav-mid{
+  width: 980px;
+  background: url(../images/nav_bg.jpg) repeat-x;
+  float: left;
+}
+
+.nav-right{
+  width: 10px;
+  background: url(../images/nav_right.jpg) repeat-x;
+  float: left;
+}
+
+.nav-left,.nav-mid,.nav-right{
+  height: 40px;
+}
+
+.nav-mid-left,.nav-mid-right{
+  float: left;
+}
+
+.nav-mid-left{
+  width: 680px;
+}
+
+.nav-mid-right{
+  width: 300px;
+}
+
+.nav-mid-left li{
+  float: left;
+  list-style-type: none;
+  width: 100px;
+  text-align: center;
+  line-height: 40px;
+}
+
+.nav-mid-left a:link,a:visited{
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  font-size:16px;
+}
+
+.nav-mid-left a:hover,a:active{
+  text-decoration: none;
+  color: rgb(244, 249, 0);
+  font-size: 20px;
+}
+
+.search-text{
+  width: 190px;
+  height: 25px;
+  margin-top: 5px;
+  background: url(../images/search.jpg) no-repeat right center;
+  background-color: rgb(255, 255, 255);
+  padding-right: 25px;
+  /* 让文字不要碰到图片 */
+}
+
+/* 圖片高310px */
+.ad{
+  height: 310px;
+  width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.main{
+  height: 250px;
+  width: 1000px;
+  margin: 0 auto;
+  margin-top: 5px;
+  background-color: rgb(254, 254, 254);
+  
+}
+
+.main .news{
+  height: 250px;
+  width: 340px;
+  border: 1px solid #E8E8E8;
+  float: left;
+
+}
+
+.main .course{
+  height: 250px;
+  width: 410px;
+  border: 1px solid #E8E8E8;
+  float: left;
+  margin: 0 7px;
+}
+
+.main .sidebar{
+  height: 250px;
+  width: 230px;
+  float: left;
+}
+
+
+.title{
+  height: 35px;
+  border-bottom:2px solid #E8E8E8
+}
+
+.title-left{
+  width: 70%;
+  font-size: 14px;
+  font-weight: bold;
+  color: rgb(21, 142, 102);
+  line-height: 35px;
+  float: left;
+  padding-left: 20px;
+}
+
+.title-right{
+  width: 20%;
+  float: right;
+  line-height: 35px;
+  text-align:right;
+}
+
+.pic-news{
+  height: 80px;
+  margin-top: 10px;
+  line-height: 22px;
+}
+
+.pic-news img,.course-pic img{
+  float: left;
+  margin: 0 5px;
+}
+
+.pic-news a,.course-pic a{
+  color: rgb(255, 0, 130);
+  text-decoration: none;
+}
+
+.news-list{
+  margin-top: 20px;
+}
+
+.news-list li{
+  list-style-type: none;
+  background: url(../images/list.jpg) no-repeat;
+  padding-left: 10px; /*讓圖標和文字離遠點 */
+  margin: 8px;
+  border-bottom: 1px dotted #CCC;
+}
+
+.news-list a:link,a:visited{
+  text-decoration: none;
+  color: #000;
+}
+
+.news-list a:hover,a:active{
+  text-decoration: none;
+  color: #F00;
+}
+
+.date{
+  color: rgb(198, 11, 5);
+  float: right;
+}
+
+.course-pic{
+  height: 20px;
+  margin-top: 10px;
+  line-height: 22px;
+}
+
+.course-type{
+  height: 37px;
+  width: 372px;
+  background: url(../images/product_type_bg.jpg) no-repeat;
+  margin: 20px auto;
+  float: left;
+}
+
+.course-type li{
+  list-style-type: none;
+  float: left;
+  line-height: 37px;
+  margin: 0 32px;
+  text-align: center;
+}
+
+.video{
+  height: 185px;
+  border:1px solid #E8E8E8;
+}
+
+.video-content{
+  height:150px;
+}
+
+.sidebar-ad{
+  height: 55px;
+  border:1px solid #E8E8E8;
+  margin-top: 10px;
+}
+
+.copyright{
+  width: 100%;
+  height: 200px;
+  background-color: #E8E8E8;
+  margin-top: 10px;
+}
+
+.copyright-content{
+  width: 1000px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.copyright-content li{
+  list-style-type: none;
+  float: left;
+  width: 200px;
+  background: url(../images/line.png) no-repeat right center;
+  text-align: center;
+  line-height: 30px;
+}
+
+.copyright-content a{
+  text-decoration: none;
+  color: #999;
+  font-size: 18px;
+}
+
+.copyright-content li ul li a{
+  font-size: 14px;
+}
+
+.list-main{
+  height: 350px;
+  background-color: rgb(255, 255, 255);
+  margin-top: 10px;
+}
