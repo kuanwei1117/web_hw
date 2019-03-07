@@ -8,13 +8,43 @@ a{text-decoration:none}
 a:hover,a:active{text-decoration:none}
 .clear {clear: both; }
 /*-----------------------------登录页面-------------------------------------*/
-body{font:12px/1.5 Microsoft YaHei;position:relative;margin:0 auto;color:#000}
+body{font:12px/1.5 Microsoft YaHei;position:relative;margin:0 auto;color:#000;}
 #container{
-width:960px;
 box-shadow: 0 0 15px #999999;
 margin: 0 auto;
 overflow-x: hidden;
 position: relative;
 }
-.login{background:rgb(79, 231, 33) url(../images/bj.png) no-repeat center top ;height:600px}
-.login_hd{background:url(../images/logo.png) no-repeat;float:left;margin:20px 20px 0;width:423px;height:57px;}
+.login{background:#0c7fc2 url(../images/bg.jpg) no-repeat center top ;height:900px}
+
+.login_hd{background:url(../images/logo.png) no-repeat;float:left;margin:20px 20px 0;width:348px;height:111px;}
+
+.login_main{position:relative; background:url(../images/form.png) no-repeat;
+float:right;margin:110px 50px 50px;width:456px;height:429px;}
+
+.login_help{float:right;margin:6px -16px 10px;width:100px;height:30px;font-size:
+14px;color:#1e7bbd}
+
+.login_help a{color:#cf3737}
+
+.login_form{width:272px;height:170px;padding:27px 28px 0 26px;color:#000101;position:relative; }
+
+.username{height:57px;margin:115px 90px 13px}
+
+.password{height:57px;margin:-25px 90px 13px;}
+
+.username input,.password input{width:176px;height:32px;border:0;color:#999;font-size:14px;line-height:32px}
+
+.username input{position:absolute; top:200px; left:100px; }
+
+.password input{position:absolute; top:225px; left:100px; }
+
+.login_btn{text-align:center;height:377px;margin:0;position:absolute; top:350px;left:40px; }
+
+.login_btn input{background:url(../images/login.png) no-repeat;border:0;width:377px;height:52px;cursor:pointer;text-indent:-9999px;*text-indent:0;*line-height:9999px;overflow:hidden}
+
+.guest{float:left;margin:0px 20px 0;height:20px;font-size:14px;position:absolute; top:320px; left:-90px; width:350px;text-align:center;color:#f00}
+
+.guest a{color:#0101ff}
+
+.first{float:right;margin:10px 0px 0;width:350px;height:50px;color:#000000;position:absolute; top:420px; left:80px;}
