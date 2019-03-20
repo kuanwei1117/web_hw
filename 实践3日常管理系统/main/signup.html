@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"">
+    <link rel="stylesheet" href="css/main.css">
+    <title>注册页面</title>
+</head>
+<body>
+    <div class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <div class="navbar-brand"><img src="#" alt="日常管理系统"></div>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="#">院領導</a></li>
+                <li><a href="#">部門領導</a></li>
+                <li><a href="#">系領導</a></li>
+                <li><a href="#">普通用戶</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="login.html">登录</a></li>
+                <li class="active"><a href="signup.html">注册</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container container-small">
+        <h1>
+        註冊
+        </h1>
+        <form>
+            <div class="form-group">
+                <label>用户类别</label>
+                    <select class="form-control">
+                         <option value="1">普通用戶</option>
+                         <option value="1">院領導</option>
+                         <option value="1">部門領導</option>
+                         <option value="1">系領導</option>
+                    </select>
+             </div>
+             <div class="form-group">
+                <label>邮箱</label>
+                <input type="text" class="form-control">
+             </div>
+            <div class="form-group">
+                <label>手机</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>验证码</label>
+                <div class="input-group">
+                        <input type="text" class="form-control">
+                        <div class="input-group-btn">
+                            <div class="btn btn-default">获取验证码</div>
+                         </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">注册</button>
+            </div>
+            <div class="form-group">
+                注册即代表您同意<a href="#">服务条款</a>
+            </div>
+        </form>
+    </div>
+    
+    <div class="footer">
+            日常管理系统 by Davis
+    </div>
+</body>
+</html>
