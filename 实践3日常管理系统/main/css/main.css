@@ -40,7 +40,7 @@ img,.side-bar .list-group-item{
 .news-list-item{
     padding-top: 15px;
     padding-bottom: 15px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid rgb(241, 241, 241);
 }
 
 .news-list-item:first-child{

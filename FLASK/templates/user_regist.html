@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block content%}
+
+    <form role="form" method="post" class="col-md-6 col-md-offset-2">
+    <div class="form-group">
+        <label for="user_name">user_name</label>
+        <input type="text" id="user_name" name="user_name" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="user_name">user_password</label>
+        <input type="password" id="user_pwd" name="user_pwd" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="user_mail">user_mail</label>
+        <input type="email" id="user_mail" name="user_mail" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="user_age">user_age</label>
+        <input type="number" id="user_age" name="user_age" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="user_birthday">user_mail</label>
+        <input type="date" id="user_birthday" name="user_birthday" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="user_face">user_face</label>
+        <input type="file" id="user_face" name="user_face" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <input type="submit"  name="submit" class="btn btn-success" value="Regist">
+    </div>
+
+
+    </form>
+
+{% endblock %}
