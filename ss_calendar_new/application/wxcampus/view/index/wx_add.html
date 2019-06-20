@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/weui.css">
+    <title>添加日程</title>
+</head>
+<body style="height: 100%; background-color: #ededed">
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-cells__title">新增日程</div>
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label for="" class="weui-label">日期</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="date" value="">
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">时间</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2">
+                        <option value="1">上午</option>
+                        <option value="2">下午</option>
+                        <option value="3">晚上</option>
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">地点</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2">
+                        <option value="1">校本部</option>
+                        <option value="2">大兴</option>
+                        <option value="3">其他</option>
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">事项</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2">
+                        <option value="1">上课</option>
+                        <option value="2">开会</option>
+                        <option value="3">其他</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells__title">事项描述</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请输入文本" rows="3"></textarea>
+                    <div class="weui-textarea-counter"><span>0</span>/200</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_block weui-btn_primary" href="javascript:" id="showTooltips">提交</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

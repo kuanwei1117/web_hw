@@ -1,0 +1,138 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content" id="result">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">日程查询&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="{:url('querystatistics/query/searchAllSchedule')}" class="btn btn-success btn-sm"  >查询所有日程</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#smallmodal">选择查询时间段</button>
+                        </h4>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                <tr>
+                                    <th class="serial">序号</th>
+                                    <th>姓名</th>
+                                    <th>身份</th>
+                                    <th>时间</th>
+                                    <th>地点</th>
+                                    <th>事项</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {notempty name="info"}
+                                {foreach name="info" item="info"}
+                                <tr>
+                                    <td class="serial">{$key+1}</td>
+                                    <td>  <span class="product">{$info.name}</span> </td>
+                                    <td>  <span class="product">{$info.position}</span> </td>
+                                    <td>  <span class="product">{$info.date}{$info.time}</span> </td>
+                                    <td>  <span class="product">{$info.place}</span> </td>
+                                    <td> <span class="product">{$info.item}</span> </td>
+                                </tr>
+                                {/foreach}
+                                {/notempty}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" style="display: inline" id="scrollmodalLabel">选择查询时间段</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </div>
+                            <div>
+                                <input type="text" id="start_time" name="start_time" placeholder="起始时间" class="form-control" disabled="disabled">
+                                <input type="date" id="start_date" name="date" value="" class="form-control" placeholder="起始时间">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </div>
+                            <div>
+                                <input type="text" id="terminal_time" name="terminal_time" placeholder="结束时间" class="form-control" disabled="disabled">
+                                <input type="date" id="terminal_date" name="date" value="" class="form-control" placeholder="结束时间">
+                            </div>
+                        </div>
+                    </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-success" data-dismiss="modal" id="date_confirm_change" >确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content -->
+{/block}
+
+
+{block name="scripts"}
+<script type="text/javascript">
+    //开始时间和结束时间判断
+    $('#date_confirm_change').on('click', function () {
+        var start_date=$("#start_date").val();
+        var terminal_date = $("#terminal_date").val();
+
+        var time1 = new Date(start_date.replace(/\-/g, "\/"));
+        var time2 = new Date(terminal_date.replace(/\-/g, "\/"));
+
+        if(start_date == "" || terminal_date == ""){
+            alert("查询时间不能为空！");
+            return false;
+        }
+        else if(time1 > time2)
+        {
+            alert("开始时间不能大于结束时间！");
+            return false;
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "searchTime",
+                async: false,
+                //dataType: 'json',
+                data: {
+                    "s_time":start_date,
+                    "t_time":terminal_date
+                },
+                success: function(data){
+                    //console.log("**"+data+"**");
+                    //$('#bootstrap-data-table').html($(data).find('#bootstrap-data-table').html());
+                    //window.location.reload();
+                    //console.log(data.data);
+                    //$('#result').html(data.data);
+                    //$('#smallmodal').modal('hide');
+                    window.location.href='searchTime?s_time='+start_date+"&t_time="+terminal_date;
+                }
+            });
+        }
+    })
+</script>
+{/block}

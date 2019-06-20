@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="获取当前管理员-id-以及-username">获取当前管理员 id 以及 username</h1>
+<h2 id="changelog">CHANGELOG</h2>
+
+<table>
+<thead>
+<tr>
+<th>日期</th>
+<th>修改內容</th>
+<th>修改人</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2019.04.22</td>
+<td>初版</td>
+<td>互联网软件开发技术第七组</td>
+</tr>
+</tbody>
+</table><h2 id="适用范围">适用范围</h2>
+<ol>
+<li>须调用公共 controller</li>
+<li>管理员须已登入</li>
+</ol>
+<h2 id="说明">说明</h2>
+<ol>
+<li>
+<p>管理员登入成功后会记录其信息在 session 以及 cookie 中：</p>
+<pre><code>// 纪录 session 和 cookie
+
+Session::set('admin_id', $admin['id']);
+Session::set('admin_name', $admin['username']);
+Cookie::set('PHPSESSID', Session_id(), 60*60*24);
+</code></pre>
+</li>
+<li>
+<p>公共 controller 執行 _initialize() 方法时会执行以下代码：</p>
+<pre><code>//检测是否登录
+
+if (!Cookie::get('PHPSESSID')){
+	$this -&gt; error('您尚未登入', 'login/namelogin/index', '', 1);
+}else{
+	Session_id(Cookie::get('PHPSESSID')); // 获取 session id
+	if (Session::has('admin_id') &amp;&amp; Session::has('admin_name')){
+		define('ADMIN_ID', Session::get('admin_id'));
+		define('ADMIN_NAME', Session::get('admin_name'));
+	}else{
+		$this -&gt; error('OOPS！请先登入！', 'login/namelogin/index', '', 1); // 导回登入页
+	}
+}
+</code></pre>
+</li>
+</ol>
+<h2 id="使用说明">使用说明</h2>
+<ol>
+<li>
+<p>通过常量获取（推荐）：</p>
+<ul>
+<li>管理员 id：<code>ADMIN_ID</code></li>
+<li>管理員 username：<code>ADMIN_NAME</code></li>
+</ul>
+</li>
+<li>
+<p>通过 session 获取</p>
+<ul>
+<li>管理员 id：<code>Session::get('admin_id')</code></li>
+<li>管理員 username：<code>Session::get('admin_name')</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="反馈">反馈</h2>
+<p>如果有任何使用上的问题或改进建议请联系第七组，新手上路请多指教 :)</p>
+</div>
+</body>
+
+</html>

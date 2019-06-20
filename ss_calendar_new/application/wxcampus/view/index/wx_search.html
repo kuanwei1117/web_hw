@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.0/weui.css">
+  	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <title>日程查询</title>
+
+</head>
+<body ontouchstart style="height: 100%; background-color: #ededed">
+    <div class="weui-tab">
+        <div class="weui-tab__panel">
+            <div class="weui-cells__title">领导日程查询</div>
+                
+            <form action="{:url('search')}" method="GET" onsubmit="return check();">
+                <div class="weui-cells" style="height: 500px;">
+                    <div class="weui-cell ">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">姓名</label>
+                        </div>
+                        <div class="weui-cell__bd"> 
+                            <input class="weui-input" type="text" name="name" id="namelist" placeholder="请输入查询姓名">  
+                        </div>
+                    </div>
+                  <div class="weui-cell ">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label"> </label>
+                        </div>
+                  </div>
+                  
+                    <div class="weui-btn-area">
+                        <button class="weui-btn weui-btn_block weui-btn_primary" id="query" type="button" onclick="check()" style="width: 90%">
+                            搜索
+                        </button>
+                    </div>
+                  
+                </div>
+            </form>
+            
+        </div>
+
+    {include file="../application/wxcampus/view/index/nav.html"}
+
+    </div>
+</body>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="__STATIC__/assets/js/bootstrap3-typeahead.js"></script>
+ 	
+<script type="text/javascript">
+  	function check(){
+      	var str = $("#namelist").val();
+      	// var match = $('#namelist').typeahead().matcher;
+        str = str.replace(/(^\s*)|(\s*$)/g, '');//去除空格;
+        if (str == '' || str == undefined || str == null) {
+          	alert('请输入姓名');
+          	// return false;
+        }
+      	else{
+      		$("button").attr("type","submit");
+      	}
+    }
+      
+	$('#namelist').typeahead({
+      	source:{$name_list},
+      	matcher:this.matcher
+        // itemSelected: displayResult
+    });
+</script>
+
+</html>
+

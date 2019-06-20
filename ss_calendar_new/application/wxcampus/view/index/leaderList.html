@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.0/weui.css">
+    <title>白名单列表</title>
+
+</head>
+<body ontouchstart style="height: 100%; background-color: #ededed">
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-panel weui-panel_access">
+            {volist name="list_time_table" id="vo"}
+            <a class="weui-cell  weui-cell_example">
+                <div class="weui-cell__hd"><img src="__STATIC__/wx/img/s.jpg" alt=""
+                                                style="width:50px;margin-right:16px;display:block;border-radius: 5px"></div>
+                <div class="weui-cell__bd">
+                    <h4 class="weui-media-box__title">{$vo.name}</h4>
+                    <p class="weui-media-box__desc">{$vo.position}</p>
+
+                    <p   style="display:none">{$vo.id}</p>
+                    <p  style="display:none">{$userid}</p>
+                </div>
+                <div class=" weui-cell__ft" onclick="add(this)">点击关注</div>
+            </a>
+            {/volist}
+
+            {volist name="followed_table" id="vi"}
+            <a class="weui-cell  weui-cell_example">
+                <div class="weui-cell__hd"><img src="__STATIC__/wx/img/s.jpg" alt=""
+                                                style="width:50px;margin-right:16px;display:block;border-radius: 5px"></div>
+                <div class="weui-cell__bd">
+                    <h4 class="weui-media-box__title">{$vi.name}</h4>
+                    <p class="weui-media-box__desc">{$vi.position}</p>
+
+                    <p   style="display:none">{$vi.id}</p>
+                    <p  style="display:none">{$userid}</p>
+                </div>
+                <div class=" weui-cell__ft" >已关注</div>
+            </a>
+            {/volist}
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function add(obj){
+        var followid = $(obj).closest('a').find('div').eq(1).find('p').eq(1).text();
+        var userid = $(obj).closest('a').find('div').eq(1).find('p').eq(2).text();
+
+
+
+        $.post("{:url('addFollow')}",
+            {
+                followid:followid,
+                userid:userid
+            },
+            function(data,status){
+                if(data == "添加成功") {
+                    window.alert = function(name){
+                        var iframe = document.createElement("IFRAME");
+                        iframe.style.display="none";
+                        iframe.setAttribute("src", 'data:text/plain,');
+                        document.documentElement.appendChild(iframe);
+                        window.frames[0].window.alert(name);
+                        iframe.parentNode.removeChild(iframe);
+                    }
+
+                    alert("关注成功!");
+
+                    window.location.reload();
+
+                }
+
+                else
+                    alert("添加失败!");
+            });
+
+    };
+</script>
+
+<script src="__STATIC__/assets/js/vendor/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/assets/js/popper.min.js"></script>
+<script src="__STATIC__/assets/js/bootstrap.min.js"></script>
+<script src="__STATIC__/assets/js/jquery.matchHeight.min.js"></script>
+<script src="__STATIC__/assets/js/main.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/datatables.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/dataTables.buttons.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.bootstrap.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/jszip.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/vfs_fonts.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.html5.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.print.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.colVis.min.js"></script>
+<script src="__STATIC__/assets/js/init/datatables-init.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.0/weui.css">
+    <title>{$title}</title>
+</head>
+<body style="height: 100%; background-color: #ededed">
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-cells__title">{$title}</div>
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__hd"><label for="" class="weui-label">日期</label></div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="date" value="{$date}" id="date">
+                </div>
+                <div class="weui-cell__bd" id="empty_date_notification" style="display: none; color:red;">请选择日期</div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">时间</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2" id="scheduletime">
+                        {volist name='times' id='vo'}
+                        <option value="{$vo.id}">{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">地点</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2" id="scheduleplace">
+                            {volist name='places' id='vo'}
+                            <option value="{$vo.id}">{$vo.name}</option>
+                            {/volist}
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">事项</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2" id="scheduleitem">
+                            {volist name='items' id='vo'}
+                            <option value="{$vo.id}">{$vo.name}</option>
+                            {/volist}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells__title">事项描述</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请输入文本" rows="3" id="note" maxlength="{$maxlength}">{$note}</textarea>
+                    <div class="weui-textarea-counter"><span><span id='wordcounter'>0</span></span>/{$maxlength}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-btn-area">
+            <span id='callbackstatus'></span>
+            <a class="weui-btn weui-btn_block weui-btn_primary" id="{$confirmid}">确定</a>
+            <a class="weui-btn weui-btn_block weui-btn_primary" href="{:url('WxCalendar/Index', ['wxcode' => $wxcode, 'userid' => $userid, 'date' => $date])}" id="cancel-btn">返回</a>
+        </div>
+        <input style="display:none" id="scheduleid" value="{$scheduleid}"></input>
+    </div>
+</div>
+<a style="display: none" href="{:url('WxCalendar/Create', ['userid' => $userid])}" id="create-url"></a>
+<a style="display: none" href="{:url('WxCalendar/Update', ['userid' => $userid])}" id="update-url"></a>
+</body>
+{literal}
+<script src="__STATIC__/assets/js/vendor/jquery-2.1.4.min.js"></script>
+<script>
+
+$(document).ready(function(){
+    function checkInput(){
+        if($('#date').val() == ''){
+            $('#empty_date_notification').show();
+            return false;
+        }
+        return true;
+    }
+    $('#date').change(function(){
+        $('#empty_date_notification').hide();
+    });
+    $('#note').keyup(function(){
+        var len = $('#note').val().length;
+        $('#wordcounter').text(len);
+    });
+    $('#create-btn').click(
+        function (){
+            if(checkInput()){
+                $.post(
+                    $('#create-url').attr('href'),
+                    {
+                        "method": "create",
+                        "date": $('#date').val(),
+                        "time_id": $('#scheduletime option:selected').val(),
+                        "place_id": $("#scheduleplace option:selected").val(),
+                        "item_id": $("#scheduleitem option:selected").val(),
+                        "note": $("#note").val() 
+                    },
+                    function (data) {
+                        if(data.success == true){
+                            $('#callbackstatus').text("新增成功!");
+                            setTimeout(function(){
+                                location.href = $('#cancel-btn').attr('href');
+                            }, 1000);
+                        }else{
+                            $('#callbackstatus').text("新增失败!" + data.message);
+                        }
+                    }
+                );
+            }
+        }
+    );
+    $('#update-btn').click(
+        function (){
+            if(checkInput()){
+                $.post(
+                    $('#update-url').attr('href'),
+                    {
+                        "method": "update",
+                        "date": $('#date').val(),
+                        "id": $('#scheduleid').val(),
+                        "time_id": $('#scheduletime option:selected').val(),
+                        "place_id": $("#scheduleplace option:selected").val(),
+                        "item_id": $("#scheduleitem option:selected").val(),
+                        "note": $("#note").val() 
+                    },
+                    function (data) {
+                        if(data.success == true){
+                            $('#callbackstatus').text("修改成功!");
+                            setTimeout(function(){
+                                location.href = $('#cancel-btn').attr('href');
+                            }, 1000);
+                        }else{
+                            $('#callbackstatus').text("修改失败!" + data.message);
+                        }
+                    }
+                );
+            }
+        }
+    );
+});
+</script>
+{/literal}
+</html>

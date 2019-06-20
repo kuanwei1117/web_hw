@@ -1,0 +1,58 @@
+
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="col-lg-12">
+                  <div class="card">
+                      <div class="card-header">
+                          <strong>管理员管理</strong> 修改权限
+                      </div>
+                      <div class="card-body card-block">
+                          <form class="form-horizontal" action="" enctype="multipart/form-data" method="post">
+
+                              <div class="row form-group">
+                                  <div class="col col-md-3"><label class=" form-control-label" for="admin_name">上级权限</label></div>
+                                  <div class="col-12 col-md-9">
+                                    <select class="form-control" name="pid">
+                                      <option value="0">顶级权限</option>
+                                      {volist name="auth_rule_list" id="auth_rules"}
+                                      <option {if condition="$auth_rule['pid'] eq $auth_rules['id']"} selected {/if} value="{$auth_rules.id}"><?php if($auth_rules['level'] != 0){echo '|';} echo str_repeat('—', $auth_rules['level']*3)?>{$auth_rules.title}</option>
+                                      {/volist}
+                                    </select>
+                                    <small class="form-text text-muted">*必填</small>
+                                  </div>
+
+                              </div>
+
+                              <div class="row form-group">
+                                  <div class="col col-md-3"><label class=" form-control-label" for="title">权限名称</label></div>
+                                  <div class="col-12 col-md-9"><input name="title" class="form-control" id="titlr" type="text" placeholder="" value="{$auth_rule.title}"><small class="form-text text-muted">*必填</small></div>
+                              </div>
+
+                              <div class="row form-group">
+                                  <div class="col col-md-3"><label class=" form-control-label" for="name">控制器 / 方法</label></div>
+                                  <div class="col-12 col-md-9"><input name="name" class="form-control" id="name" type="text" placeholder="" value="{$auth_rule.name}"><small class="form-text text-muted">*必填</small></div>
+                              </div>
+
+                              <input type="hidden" name="id" value="{$auth_rule.id}">
+
+                              <button class="btn btn-primary btn-sm" type="submit">
+                                  <i class="fa fa-dot-circle-o"></i> 确认修改
+                              </button>
+
+                          </form>
+                      </div>
+                      <div class="card-footer">
+
+
+                      </div>
+                  </div>
+
+              </div>
+  </div>
+<!-- /.content -->
+{/block}
+{block name="scripts"}
+<script src="__STATIC__/admin/js/admin/beyond.js"></script>
+{/block}

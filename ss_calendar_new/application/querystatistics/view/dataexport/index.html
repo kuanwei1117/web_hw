@@ -1,0 +1,65 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">导出历史日程
+                        </h4>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <style>
+                                    .btn-ex{
+                                        background-color: lightgreen;
+                                        border: none;
+                                        color: black;
+                                        font-family:Arial;
+                                        padding: 10px 24px;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        display: inline-block;
+                                        font-size: 18px;
+                                        margin: 4px 2px;
+                                        cursor: pointer;
+                                    }
+                                    p{
+
+                                        text-align: center;
+
+                                    }
+                                </style>
+                                <form method="post" action="{:url('Dataexport/export')}" >
+                                    <p>
+                                        <label for="starttime">开始日期：</label><input id="starttime" name="start" type="date" value="2019-06-1"/>
+                                        <label for="endtime">结束日期：</label><input id="endtime" name="end" type="date" value="2019-06-1"/>
+                                    </p>
+                                    <p><button  class ="btn-ex"> 导出全部用户历史日程</button></p>
+                                </form>
+                                <form method="post" action="{:url('Dataexport/exportuser')}" >
+                                    <p><label>姓名/工号</label>
+                                        <input type="text" name="username" class ="" id = "inputname"  placeholder="请输入用户姓名或工号">
+                                        <label for="start">开始日期：</label><input id="start" name="start" type="date" value="2019-06-1"/>
+                                        <label for="end">结束日期：</label><input id="end" name="end" type="date" value="2019-06-1"/>
+                                    </p>
+                                    <p></p>
+                                    <p></p>
+                                    <p><button  class ="btn-ex"> 导出用户历史日程</button></p>
+                                </form>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .animated -->
+</div>
+
+<!-- /.content -->
+{/block}

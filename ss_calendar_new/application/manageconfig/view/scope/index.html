@@ -1,0 +1,233 @@
+{extend name="common@public/base" /}
+{block name="styles"}
+
+<!-- 新加路径 -->
+<link href="__STATIC__/calendar_scope/css/calendar.css" rel="stylesheet" type="text/css" />
+{/block}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">可维护日程范围&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-success btn-sm" data-toggle="modal"
+                                data-target="#scope">修改日程范围</button>
+                        </h4>
+                        <div class="modal fade" id="scope" tabindex="-1" role="dialog" aria-labelledby="scopeLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-sm" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" style="display: inline" id="scopeLabel">修改时间范围</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-pencil-square-o"></i>
+                                                    </div>
+                                                    <input type="number" id="scopenum" name="scope_modify" value=""
+                                                        class="form-control" placeholder="单位：日">
+                                                </div>
+                                            </div>
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p style="margin-left:16px; margin-top:-6px">注意：最多可维护1000天的范围</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-success" id="confirm_modify">确认</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="calendar" style="margin-left:auto; margin-right:auto;overflow:hidden;">
+                        <div class="title">
+                            <h1 class="green" id="calendar-title">Month</h1>
+                            <h2 class="green small" id="calendar-year">Year</h2>
+                            <a href="" id="prev">Prev Month</a>
+                            <a href="" id="next">Next Month</a>
+                        </div>
+                        <div class="body">
+                            <div class="lightgrey body-list">
+                                <ul>
+                                    <li>SUN</li>
+                                    <li>MON</li>
+                                    <li>TUE</li>
+                                    <li>WED</li>
+                                    <li>THU</li>
+                                    <li>FRI</li>
+                                    <li>SAT</li>
+                                </ul>
+                            </div>
+                            <div class="darkgrey body-list">
+                                <ul id="days">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body--"
+                        style="padding: 10px; background:#e9f8df;border:2px solid #28a745;margin-bottom: 50px; margin-top:50px;margin-left:auto; margin-right:auto;overflow:hidden;">
+                        <div class="table-stats">
+                            <span>目前用户可维护“未来&nbsp;&nbsp;<em><strong style="color: #28a745"
+                                        id="last_scope">{$last_scope}</strong></em>&nbsp;&nbsp;日内”的日程
+
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.content -->
+{/block}
+{block name="scripts"}
+<script type="text/javascript">
+    /*
+    修改日程的脚本
+    */
+    // 确认新增ajax
+    $("#confirm_modify").click(function () {
+        //先略过不合法输入,只做trim处理
+        var scope_num = $.trim($('#scopenum').val());
+        //var timeorder = $.trim($('#time_order_add').val());
+        console.log(scope_num);
+        //console.log(timeorder);
+        if (scope_num.length === 0) {
+            alert('输入不能为空');
+            return;
+        }
+        if (!(scope_num + "").match(/^\d+$/)) {
+            alert('日程范围必须为自然数');
+            return;
+        }
+        if(scope_num > 1000){
+            alert('最多可维护1000天的范围');
+            return;
+        }
+        //post方法修改
+        $.post("{:url('scope/scopeModify')}", {
+            scope: scope_num
+        },
+            function (data, status) {
+                if (data == 0) {
+                    console.log(data);
+                    console.log(status);
+                    location.reload();
+                }
+                else {
+                    alert('更新失败');
+                }
+            });
+    });
+</script>
+
+
+<script type="text/javascript">
+    /*
+    显示日历的脚本
+    */
+    var month_olympic = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var month_normal = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var month_name = ["January", "Febrary", "March", "April", "May", "June", "July", "Auguest", "September", "October", "November", "December"];
+    var holder = document.getElementById("days");
+    var prev = document.getElementById("prev");
+    var next = document.getElementById("next");
+    var ctitle = document.getElementById("calendar-title");
+    var cyear = document.getElementById("calendar-year");
+    var my_date = new Date();
+    var my_year = my_date.getFullYear();
+    var my_month = my_date.getMonth();
+    var my_day = my_date.getDate();
+
+    var day_to_millisecond = 86400000;
+
+
+    var my_scope = parseInt(document.getElementById("last_scope").innerHTML);
+    //从页面提取时间范围
+    var my_timestamp = Date.parse(new Date());
+    var end_timestamp = my_timestamp + my_scope * day_to_millisecond;
+
+    console.log(typeof (end_timestamp), end_timestamp);
+
+    var end_date = new Date(end_timestamp);
+    var end_year = end_date.getFullYear();
+    var end_month = end_date.getMonth();
+    var end_day = end_date.getDate();
+
+    console.log("end_month:", end_month);
+
+    console.log(typeof (end_date), end_date);
+
+    prev.onclick = function (e) {
+        e.preventDefault();
+        my_month--;
+        if (my_month < 0) {
+            my_year--;
+            my_month = 11;
+        }
+        refreshDate();
+    }
+    next.onclick = function (e) {
+        e.preventDefault();
+        my_month++;
+        if (my_month > 11) {
+            my_year++;
+            my_month = 0;
+        }
+        refreshDate();
+    }
+    function refreshDate() {
+        var str = "";
+        var totalDay = daysMonth(my_month, my_year); //获取该月总天数
+        var firstDay = dayStart(my_month, my_year); //获取该月第一天是星期几
+        var myclass;
+        for (var i = 0; i < firstDay; i++) {
+            str += "<li></li>"; //为起始日之前的日期创建空白节点
+        }
+        for (var i = 1; i <= totalDay; i++) {
+            if (i == my_day && my_year == my_date.getFullYear() && my_month == my_date.getMonth()) {
+                myclass = " class='green greenbox'"; //当该日期是当天时，以绿色背景突出显示
+            } else if (i == end_day && my_year == end_date.getFullYear() && my_month == end_date.getMonth()) {
+                myclass = " class='green greenbox'"; //当该日期是日程范围上限时，以绿色背景突出显示
+            } else if ((i < my_day && my_year == my_date.getFullYear() && my_month == my_date.getMonth()) || my_year < my_date.getFullYear() || (my_year == my_date.getFullYear() && my_month < my_date.getMonth())) {
+                myclass = " class='lightgrey'"; //当该日期在今天之前时，以浅灰色字体显示
+            } else if ((i > end_day && my_year == end_date.getFullYear() && my_month == end_date.getMonth()) || my_year > end_date.getFullYear() || (my_year == end_date.getFullYear() && my_month > end_date.getMonth())) {
+                myclass = " class='lightgrey'"; //当该日期在截止日期之后时，以浅灰色字体显示
+            } else {
+                myclass = " class='darkgrey'"; //当该日期在今后之后时，以深灰字体显示
+            }
+            str += "<li" + myclass + ">" + i + "</li>"; //创建日期节点
+        }
+        holder.innerHTML = str; //设置日期显示
+        ctitle.innerHTML = month_name[my_month]; //设置英文月份显示
+        cyear.innerHTML = my_year; //设置年份显示
+    }
+    //获取某年某月第一天是星期几
+    function dayStart(month, year) {
+        var tmpDate = new Date(year, month, 1);
+        return (tmpDate.getDay());
+    }
+
+    //计算某年是不是闰年，通过求年份除以4的余数即可
+    function daysMonth(month, year) {
+        //var tmp = year % 4;
+        if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {
+            return (month_olympic[month]);
+        } else {
+            return (month_normal[month]);
+        }
+    }
+    refreshDate();
+</script>
+{/block}

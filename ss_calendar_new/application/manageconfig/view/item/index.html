@@ -1,0 +1,364 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">日程事项&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit" id="add" class="btn btn-success btn-sm" data-toggle="modal" data-target="#smallModal1" >添加事项</button>
+                        </h4>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                <tr>
+                                    <th class="serial">序号</th>
+                                    <!--<th>事项ID</th>-->
+                                    <th>事项描述</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {notempty name="scheduleItems"}
+                                {foreach name="scheduleItems" item="scheduleItem"}
+                                {switch name="$scheduleItem['is_delete']"}
+                                {case value="0"}
+                                <tr>
+                                    <td class="serial">{$key+1}</td>
+                                    <!--<td>  <span class="product">{$scheduleItem['id']}</span></td>-->
+                                    <td>  <span class="product">{$scheduleItem['name']}</span></td>
+                                    <td>  <span class="product">正常</span></td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm mb-1" data-id="{$scheduleItem.id}" data-des="{$scheduleItem.name}" data-toggle="modal" data-target="#smallModal2">
+                                            <i class="fa fa-magic"></i>&nbsp;编辑
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1"  data-id="{$scheduleItem.id}" data-toggle="modal" data-target="#smallModal3">
+                                            <i class="fa fa-exclamation"></i>&nbsp;删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                {/case}
+                                {case value="1"}
+                                <tr>
+                                    <td class="serial">{$key+1}</td>
+                                    <td>  <span class="product">{$scheduleItem['name']}</span></td>
+                                    <td>  <span class="product">已作废</span></td>
+                                    <td>
+                                        <button type="button" class="btn btn-recover btn-sm mb-1" data-id="{$scheduleItem.id}" data-toggle="modal" data-target="#smallModal5">
+                                            <i class="fa fa-rotate-left"></i>&nbsp;恢复
+                                        </button>
+                                    </td>
+                                </tr>
+                                {/case}
+                                {/switch}
+                                {/foreach}
+                                {/notempty}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="smallModal2" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="scrollmodalLabel">编辑事项</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-check-square-o"></i>
+                                    </div>
+                                    <input type="text" id="itemIdE" name="itemIdE" value="01" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <input type="hidden" id="yuanDes">
+                                    <input type="text" id="itemDesE" name="itemDesE" value="开会" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div id="msg2"></div>
+                            </div>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="modify_cancel" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" id="submit_modify" data-dismiss="modal">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="smallModal1" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">添加事项</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <input type="text" id="itemDesA" name="itemDescription" placeholder="事项描述" class="form-control">
+                                </div>
+                            </div>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"  id="add_cancel" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" id="submit_add" data-dismiss="modal">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="smallModal3" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">删除事项</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            <div class="form-group">
+                                确定删除吗?
+                            </div>
+                            </p>
+                            <div class="form-group">
+                                <div id="msg3"></div>
+                            </div>
+                            <div>
+                                <input id="id"  type="hidden">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" id="submit_delete" data-dismiss="modal">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="smallModal5" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">恢复事项</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                        <div class="form-group">
+                            确定恢复吗?
+                        </div>
+                        </p>
+                        <div>
+                            <input id="updateId"  type="hidden">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-success" id="submit_update" data-dismiss="modal">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- .animated -->
+</div>
+{/block}
+{block name="scripts"}
+<script type="text/javascript">
+    $('#smallModal1').on('show.bs.modal', function (e) {
+        $("#msg1").html("");
+    });
+    $('#smallModal4').on('show.bs.modal', function (e) {
+        $("#myModalLabel").html("模态框的标题");
+    });
+
+    $("#add_cancel").on("click", function(){
+        $("#itemDesA").val("");
+    });
+    $("#submit_add").on("click", function(){
+        var des = $.trim($("#itemDesA").val());
+        if(des.length === 0)
+        {
+            alert('输入不能为空');
+            window.location.reload();
+            return;
+        }
+        if(des.length >30)
+        {
+            alert('输入是事项过长');
+            window.location.reload();
+            return;
+        }
+        desq = des;
+        //判断是否含有标点符号
+        var pattern = new RegExp("[`~!@#$^&*=|{}':;',\\[\\].<>/?~！@#￥……&*——|{}【】‘；：”“'。，、？]");
+        var rs = "";
+        for (var i = 0; i < desq.length; i++) {
+            rs = rs+desq.substr(i, 1).replace(pattern, '');
+        }
+        if(rs.length < des.length){
+            alert('包含特殊字符');
+            window.location.reload();
+            return;
+        }
+        //$("#smallmodal1").modal(true,true,true,false);
+        $.ajax({
+            url:"{:url('manageconfig/item/addScheduleItem')}",
+            type:"POST",
+            data:{"des":des},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+    });
+
+    $('#smallModal2').on('show.bs.modal', function (e) {
+        var id = $(e.relatedTarget).data("id");
+        var des = $(e.relatedTarget).data("des");
+        $("#itemIdE").val(id);
+        $("#yuanDes").val(des);
+        $("#itemDesE").val(des);
+        $("#msg2").html("");
+    });
+    $("#modify_cancel").on("click", function(){
+        $("#itemDesE").val("");
+
+    });
+    $("#submit_modify").on("click", function(){
+        var id =$.trim($("#itemIdE").val());
+        var des =$.trim($("#itemDesE").val());
+        var yuanDes = $.trim($("#yuanDes").val());
+        console.log(id);
+        if(des.length === 0)
+        {
+            alert('输入不能为空');
+            window.location.reload();
+            return;
+        }
+        if(des.length >30)
+        {
+            alert('输入是事项过长');
+            window.location.reload();
+            return;
+        }
+        desq = des;
+        //判断是否含有标点符号
+        var pattern = new RegExp("[`~!@#$^&*=|{}':;',\\[\\].<>/?~！@#￥……&*——|{}【】‘；：”“'。，、？]");
+        var rs = "";
+        for (var i = 0; i < desq.length; i++) {
+            rs = rs+desq.substr(i, 1).replace(pattern, '');
+        }
+        if(rs.length < des.length){
+            alert('包含特殊字符');
+            window.location.reload();
+            return;
+        }
+
+        $.ajax({
+            url:"{:url('manageconfig/item/editScheduleItem')}",
+            type:"POST",
+            data:{"id":id,"des":des,"yuanDes":yuanDes},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+    });
+    $('#smallModal3').on('show.bs.modal', function (e) {
+        var id = $(e.relatedTarget).data("id");
+        $("#id").val(id);
+        $("#msg3").html("");
+    });
+
+    $("#submit_delete").on("click", function(){
+        var id = $.trim($("#id").val());
+        console.log(id);
+        $.ajax({
+            url:"{:url('manageconfig/item/deleteScheduleItem')}",
+            type:"POST",
+            data:{"id":id},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+    });
+
+    $('#smallModal5').on('show.bs.modal', function (e) {
+        var id = $(e.relatedTarget).data("id");
+        $("#updateId").val(id);
+    });
+
+    $("#submit_update").on("click", function(){
+        var id = $.trim($("#updateId").val());
+        console.log(id);
+        $.ajax({
+            url:"{:url('manageconfig/item/updateScheduleItem')}",
+            type:"POST",
+            data:{"id":id},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+    });
+
+
+
+    $("#submit_sure").click(function(){
+
+        window.location.reload();
+    });
+    //显示消息modal,信息设为msg
+    function hintShow(msg){
+        $(document).ready(function() {
+            $('#smallModal4').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+        });
+    }
+</script>
+<!-- /.content -->
+{/block}

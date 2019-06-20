@@ -1,0 +1,74 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+{include file='common@public:header' /}
+<!--其他样式-->
+
+<!--其他样式-->
+
+<body style="width： 100%; height: 100%;">
+
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <form action="{:url('getMyScheduleInfo', ['user_id'=>$user_id])}" method="get">
+                    <div class="weui-tab">
+                        <div class="wei-tab__panel">
+                            <div class="weui-cells">
+                                <div class="weui-cell">
+                                    <center>
+                                        <label class="weui-cell__hd" style="font-size: 18px; width: 25%;">开始日期</label>
+                                        <input class="wei-input" type="date" value="{$date}" name="starttime" style="background-color: #FFFFFF; margin-right: 3px; height: 35px; font-size: 18px;">
+                                    </center>
+
+                                    <center>
+                                        <label class="weui-cell__hd" style="font-size: 18px; width: 25%;">截止日期</label>
+                                        <input class="wei-input" type="date" value="{$date}" name="endtime" style="background-color: #FFFFFF; margin-right: 3px; height: 35px; font-size: 18px;">
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <center>
+                        <button type="submit" id="add" class="btn btn-success btn-sm" data-toggle="modal"
+                        data-target=".add-schedule" style="width: 85%; height: 35px;"><span style="font-size: 18px">查询</span></button>
+                    </center>
+                </form>
+
+                <br />
+                <div class="card-body--">
+                    <div class="table-stats">
+                        <table id="bootstrap-data-table" class="table">
+                            <thead>
+                            <tr>
+                                <th class="serial">序号</th>
+
+                                <th>时间</th>
+                                <th>地点</th>
+                                <th>事项</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name= 'schedule_info' id='list'}
+                            <tr>
+                                <td class="serial">{$i}</td>
+                                <td>  <span class="product">{$list.date}</span> </td>
+                                <td>  <span class="product">{$list.place}</span> </td>
+                                <td> <span class="product">{$list.item}</span> </td>
+                            </tr>
+                            {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .animated -->
+</div>
+
+<!-- /.content -->
+</body>
+</html>

@@ -1,0 +1,259 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">日程时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addwhitelist">添加人员</button>
+			    <button type="button" class="btn btn-success btn-sm"><a href="#" onclick="warning('确实要清空吗', '{:url(\'/manageconfig/whitelist/clearwhitelist\')}')"
+                                                    style="color:#fff;">清空所有</a></button>
+
+                            <button id="batchShow" type="submit" class="btn btn-success btn-sm">
+                                Excel批量导入
+                            </button>
+                            <a href="{:url('excelOutput')}" class="btn btn-success btn-sm" >Excel批量导出</a>
+                            <br/>
+                         
+                          <a href="{:url('excelModel')}" class="btn btn-success btn-sm" >Excel模板</a>
+                      		<br/>
+                            <button style="display:none ;" id="button2" type="submit"
+                                    class="btn btn-success btn-sm "
+                                    onclick='hideAllCheckbox() ,
+                                        refreshcheckbox(),
+                                          document.getElementById("button2").style.display="none" ,
+                                                  document.getElementById("button1").style.display="none"'>取消
+                            </button>
+
+                            <form id="batchAdd" action="excelInput" enctype="multipart/form-data" method="post"
+                                  style="display: none"><br/>
+                                <label>Excel文件:</label>
+                                <input type="file" name="file"/> <br/>
+                                <label>添加注意事项:</label><br/>
+                      
+                                <label>1、数据千万条，安全第一条。</label><br/>
+                                <label>2、请上传Excel表格文件添加，格式：.xlsx</label><br/>
+                                <label>3、EXCEL表头: |序号|学(工)号|</label> <br/>
+                                <label>&nbsp&nbsp&nbsp&nbsp&nbspEXCEL表数据: |1|1801212312|</label> <br/>
+                                <input class="btn btn-success btn-sm" type="submit" value="上传"/>
+                            </form>
+                        </h4>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                <tr>
+                                    <th class="serial">序号</th>
+                                    <th>用户姓名</th>
+                                    <th>用户工号/学号</th>
+                                    <th>用户类型</th>
+                                    <th>所属部门/系(学院)</th>
+                                    <th>用户职位</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name='info' id='list'}
+                                <tr data-id={$list.id}>
+                                    <td class="serial" >{$i}.</td>
+                                    <td>  <span class="product">{$list.ui_name}</span> </td>
+                                    <td>  <span class="product">{$list.work_id}</span> </td>
+                                    <td data-id="{$list.type_id}">  <span class="product" >{$list.type}</span> </td>
+                                    <td data-id={$list.depart_id}>  <span class="product" >{$list.ud_name}</span> </td>
+                                    <td data-id={$list.position_id}>  <span class="product" >{$list.up_name}</span> </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm mb-1" data-toggle="modal" data-target="#delwhitelist">
+                                            <i class="fa fa-exclamation"></i>&nbsp;删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                {/volist}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--添加白名单人员-->
+
+                <div class="modal fade" id="addwhitelist" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addmodalLabel">添加人员</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-credit-card"></i>
+                                        </div>
+                                        <input type="number" id="work_id" name="work_id" placeholder="工号/学号" class="form-control">
+                                    </div>
+                                </div>
+
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-success" id="confirmadd">确认</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            <!--删除人员信息-->
+
+                <div class="modal fade" id="delwhitelist" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="delmodalLabel">删除人员</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="del_id" name="del_id">
+                                <p>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <input type="text" id="del_name" name="name" placeholder="姓名" class="form-control" readonly="true">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-credit-card"></i>
+                                        </div>
+                                        <input type="text" id="del_work_id" name="work_id"  class="form-control" readonly="true">
+                                    </div>
+                                </div>
+
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-success" id="confirmdel">确认</button></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+        </div>
+    </div>
+    <!-- .animated -->
+</div>
+<!-- /.content -->
+{/block}
+
+{block name="scripts"}
+<!--添加白名单人员-->
+<script src="__STATIC__/admin/js/admin/lst.js"></script>
+<script src="__STATIC__/admin/js/admin/beyond.js"></script>
+<script type="text/javascript">
+    $('#confirmadd').click(function () {
+        var work_id = $.trim($('#work_id').val());
+
+        if (work_id.length==0){
+            alert('输入不能为空！');
+            return 0;
+        }
+        if (!(work_id+"").match(/^\d+$/)) {
+            alert('学/工号必须为整数');
+            return 0;
+        }
+        console.log(work_id);
+        $.ajax({
+            url:"{:url('manageconfig/whitelist/addwhitelist')}",
+            type:"POST",
+            data:{
+                "work_id":work_id,
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+
+    })
+</script>
+
+<!--删除人员-->
+<script type="text/javascript">
+    $('#delwhitelist').on('show.bs.modal',function (event) {
+        var btnThis = $(event.relatedTarget); //触发事件的按钮
+        var modal = $(this);  //当前模态框
+        var modalId = btnThis.data('id');   //解析出data-id的内容
+        var id = btnThis.closest('tr').data('id');
+        console.log(id);
+        var work_id = btnThis.closest('tr').find('td').eq(2).text();
+        var name = btnThis.closest('tr').find('td').eq(1).text();
+        var type_id = btnThis.closest('tr').find('td').eq(3).data('id');
+        var depart = btnThis.closest('tr').find('td').eq(4).data('id');
+        var position = btnThis.closest('tr').find('td').eq(5).data('id');
+        modal.find('#del_name').val(name);
+        modal.find('#del_work_id').val(work_id);
+        modal.find('#del_type_id').val(type_id);
+        modal.find('#del_depart_id').val(depart);
+        modal.find('#del_position_id').val(position);
+        modal.find('#del_id').val(id);
+
+    });
+    $('#confirmdel').click(function () {
+        var del_id = $('#del_id').val();
+        $.ajax({
+            url:"{:url('manageconfig/whitelist/delwhitelist')}",
+            type:"POST",
+            data:{
+                "del_id":del_id
+            },
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+    })
+</script>
+
+<!--Excel添加-->
+<script>
+    $('#batchShow').click(function () {
+        let form = document.getElementById('batchAdd');
+        if (form.style.display === 'none') {
+            $('#batchShow').text('取消上传');
+            form.style.display = 'inline';
+        } else {
+            $('#batchShow').text('Excel批量导入');
+            form.style.display = 'none';
+        }
+    });
+    function hideAllCheckbox() {
+        let allCheckboxs = document.getElementsByClassName("checkbox");
+        for (let i = 0; i < allCheckboxs.length; i++) {
+            allCheckboxs[i].style.display = "none";
+        }
+    }
+</script>
+{/block}

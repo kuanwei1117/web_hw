@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.0/weui.css">
+    <title>日程查询</title>
+
+</head>
+<body ontouchstart style="height: 100%; background-color: #ededed">
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-cells__title">领导日程查询</div>
+        <div class="weui-cells">
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">部门</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2">
+                        <option value="1">学工部</option>
+                        <option value="2">教务处</option>
+                        <option value="3">后勤</option>
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">职务</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2">
+                        <option value="1">主任</option>
+                        <option value="2">教师</option>
+                        <option value="3">其他</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="weui-cell ">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">姓名</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入姓名" id="query_name">
+                </div>
+            </div>
+
+            <div class="weui-cell ">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">工号</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input class="weui-input" type="number" placeholder="请输入工号" id="work_id">
+                </div>
+            </div>
+
+        </div>
+        <div class="weui-cells__title">历史搜索</div>
+        <div style="margin:0px 12px;">
+            <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default" style="margin: 5px;color:#9b9b9b">张老师</a>
+            <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default" style="margin: 5px;color:#9b9b9b">张老师</a>
+            <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default" style="margin: 5px;color:#9b9b9b">张老师</a>
+        </div>
+
+
+
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_block weui-btn_primary" id="query">搜索</a>
+        </div>
+    </div>
+
+    <div class="weui-tabbar">
+        <a href="wx_search.html" class="weui-tabbar__item  weui-bar__item_on">
+                    <span style="display: inline-block;position: relative;">
+                        <img src="__STATIC__/wx/img/chaxun_on.png" alt="" class="weui-tabbar__icon">
+                    </span>
+            <p class="weui-tabbar__label">查询</p>
+        </a>
+        <a href="wx_myagenda.html" class="weui-tabbar__item ">
+            <img src="__STATIC__/wx/img/richeng.png" alt="" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">日程</p>
+        </a>
+        <a href="wx_attention.html" class="weui-tabbar__item">
+                    <span style="display: inline-block;position: relative;">
+                        <img src="__STATIC__/wx/img/guanzhu-black.png" alt="" class="weui-tabbar__icon">
+        <p class="weui-tabbar__label">关注</p>
+                    </span>
+        </a>
+        <a href="wx_me.html" class="weui-tabbar__item">
+            <img src="__STATIC__/wx/img/wode.png" alt="" class="weui-tabbar__icon">
+            <p class="weui-tabbar__label">我的</p>
+        </a>
+    </div>
+</div>
+</body>
+  
+  {literal}
+  <script>
+    $("#query").onclick(function () {
+        query();
+    });
+    
+  	function query() {
+        var query_name = $("#query_name").val();
+        var work_id = $('#work_id').val();
+        $.ajax({
+            type: "POST",
+            url: 'wxcampus/Wxquery/index', //请求程序页面
+            async: false,
+            data: {
+                "query_name": query_name,
+                "work_id": work_id
+            },//请求需要发送的处理数据
+            success: function (msg) {
+                window.location.reload()
+            },
+            fail: function (msg) {
+                console.log(msg);
+            }
+        });
+    }
+  </script>
+  {literal}
+  
+</html>

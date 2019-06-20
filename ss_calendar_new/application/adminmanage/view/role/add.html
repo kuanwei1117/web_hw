@@ -1,0 +1,113 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="col-lg-12">
+                  <div class="card">
+                      <div class="card-header">
+                          <strong>管理员管理</strong> 添加用户组
+                      </div>
+                      <div class="card-body card-block">
+                          <form class="form-horizontal" action="" enctype="multipart/form-data" method="post">
+
+                              <div class="row form-group">
+                                  <div class="col col-md-3"><label class=" form-control-label" for="title">用户组名称</label></div>
+                                  <div class="col-12 col-md-9"><input name="title" class="form-control" id="title" type="text" placeholder="" value=""><small class="form-text text-muted">*必填</small></div>
+                              </div>
+
+                              <div class="row form-group">
+                                <div class="col col-md-3"><label class=" form-control-label" for="status">用户组状态</label></div>
+                                <label class="switch ml-3">
+                                  <input type="checkbox" name="status" checked='checked' value="1">
+                                  <span class="slider round"></span>
+                                </label>
+                              </div>
+
+                              <div class="row form-group">
+                                  <div class="card-body">
+                          <table class="table table-striped">
+                              <thead>
+                                  <tr>
+                                      <th scope="col">配置权限</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                              {volist name='auth_rule_list' id="auth_rule"}
+                                  <tr>
+                                    <td scope="row">
+                                        <label for="">
+                                          <?php if($auth_rule['level'] != 0){echo '|';} echo str_repeat('—', $auth_rule['level']*3)?>
+                                          <input dataid="id-{$auth_rule.dataid}" class="checkbox-parent {if condition="$auth_rule['level'] neq 0"} checkbox-child {/if}" type="checkbox" name="rules[]" value="{$auth_rule.id}" >
+                                          <span class="{if condition="$auth_rule['level'] eq 0"} font-weight-bold {/if}">{$auth_rule.title}</span>
+                                        </label>
+                                    </td>
+                                  </tr>
+                              {/volist}
+
+                              </tbody>
+                          </table>
+                      </div>
+
+                              </div>
+
+                              <input type="hidden" name="id" value="">
+
+                              <button class="btn btn-primary btn-sm" type="submit">
+                                  <i class="fa fa-dot-circle-o"></i> 确认添加
+                              </button>
+
+                          </form>
+                      </div>
+                      <div class="card-footer">
+
+
+                      </div>
+                  </div>
+
+              </div>
+  </div>
+<!-- /.content -->
+{/block}
+{block name="scripts"}
+<script src="__STATIC__/admin/js/admin/beyond.js"></script>
+<script type="text/javascript">
+    /* 权限配置 */
+    $(function () {
+        //动态选择框，上下级选中状态变化
+        $('input.checkbox-parent').on('change', function () {
+            var dataid = $(this).attr("dataid");
+            $('input[dataid^=' + dataid + ']').prop('checked', $(this).is(':checked'));
+        });
+        $('input.checkbox-child').on('change', function () {
+            var dataid = $(this).attr("dataid");
+            dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+            var parent = $('input[dataid=' + dataid + ']');
+            if ($(this).is(':checked')) {
+                parent.prop('checked', true);
+                //循环到顶级
+                while (dataid.lastIndexOf("-") != 2) {
+                    dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+                    parent = $('input[dataid=' + dataid + ']');
+                    parent.prop('checked', true);
+                }
+            } else {
+                //父级
+                if ($('input[dataid^=' + dataid + '-]:checked').length == 0) {
+                    parent.prop('checked', false);
+                    //循环到顶级
+                    while (dataid.lastIndexOf("-") != 2) {
+                        dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+                        parent = $('input[dataid=' + dataid + ']');
+                        if ($('input[dataid^=' + dataid + '-]:checked').length == 0) {
+                            parent.prop('checked', false);
+                        }
+                    }
+                }
+            }
+        });
+    });
+        </script>
+{/block}
+{block name="styles"}
+<link rel="stylesheet" href="__STATIC__/admin/css/style.css">
+{/block}

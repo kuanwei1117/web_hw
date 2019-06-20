@@ -1,0 +1,123 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+{include file='common@public:header' /}
+
+<body>
+<!-- /#right-panel -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">领导列表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                        </h4>
+                    </div>
+
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                <tr>
+                                    <th class="serial">序号</th>
+                                    <th style="display:none">用户ID</th>
+                                    <th>姓名</th>
+                                    <th>职位</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="list_time_table" id="vo"}
+                                <tr>
+                                    <td class="serial">{$i}</td>
+                                    <td style="display:none">  <span>{$vo.id}</span> </td>
+                                    <td>  <span class="product"><span>{$vo.name}</span> </td>
+                                    <td>  <span class="product"><span>{$vo.position}</span> </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm mb-1" data-toggle="modal" data-target="#smallmodal" onclick="ajaxPost(this)">
+                                            <i class="fa fa-magic"></i>&nbsp;添加关注
+                                        </button>
+
+                                    </td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="smallmodal1" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="display: inline" id="scrollmodalLabel">添加关注人</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+    <!-- /.content -->
+
+
+<script type="text/javascript">
+    function ajaxPost(obj){
+            var followid = $(obj).closest('tr').find('td').eq(1).text();
+            console.log(followid);
+            $.post("{:url('Follow/addFollow')}",
+                {
+                    followid:followid,
+                },
+                function(data,status){
+                    if(data == "添加成功")
+                        location.reload();
+                    else
+                        alert(data);
+                });
+        };
+</script>
+<!-- 公用js -->
+<script src="__STATIC__/assets/js/vendor/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/assets/js/popper.min.js"></script>
+<script src="__STATIC__/assets/js/bootstrap.min.js"></script>
+<script src="__STATIC__/assets/js/jquery.matchHeight.min.js"></script>
+<script src="__STATIC__/assets/js/main.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/datatables.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/dataTables.buttons.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.bootstrap.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/jszip.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/vfs_fonts.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.html5.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.print.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.colVis.min.js"></script>
+<script src="__STATIC__/assets/js/init/datatables-init.js"></script>
+<!-- 公用js -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#bootstrap-data-table-export').DataTable();
+    } );
+</script>
+<!-- 此页相关的js -->
+<!--{block name="scripts"}{/block}-->
+<!-- 此页相关的js -->
+</body>
+</html>
+<!-- Content -->
+

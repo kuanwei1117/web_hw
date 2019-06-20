@@ -1,0 +1,642 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">消息模板&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#smallModal1">添加模板</button>
+                            <button type="submit" id = "buttonSearch" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#smallModal5">查询模板</button>
+                            <button type="submit" id = "buttonRefresh" class="btn btn-info btn-sm"><i class="fa fa-refresh"></i>&nbsp;全部</button>
+                        </h4>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                <tr>
+                                    <th class="serial">序号</th>
+                                    <!--<th>事项ID</th>-->
+                                    <th>模板名称</th>
+                                    <th>模板内容</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="templateBody">
+                                {volist name='templateItems' id='templateItem'}
+                                <tr>
+                                    <td class="serial"><span id="span1">{$key+1}</span></td>
+                                    <td>  <span class="product" id="span2">{$templateItem.title}</span></td>
+                                    <td>  <span class="product" id="span3">{$templateItem.content}</span></td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm mb-1" data-id="{$templateItem.id}" data-des="{$templateItem.title}" data-content="{$templateItem.content}"" data-toggle="modal" data-target="#smallModal2">
+                                            <i class="fa fa-magic"></i>&nbsp;编辑
+                                        </button>
+                                        {eq name="templateItem.is_delete" value="0"}
+                                        <button type="button" class="btn btn-danger btn-sm mb-1"  data-id="{$templateItem.id}" data-toggle="modal" data-target="#smallModal3">
+                                            <i class="fa fa-exclamation"></i>&nbsp;删除
+                                        </button>
+                                        {else/}
+                                        <button type="button" class="btn btn-danger btn-sm mb-1"  data-id="{$templateItem.id}" date-title="{$templateItem.title}" data-toggle="modal" data-target="#smallModal6">
+                                            <i class="fa fa-exclamation"></i>&nbsp;恢复
+                                        </button>
+                                        {/eq}
+                                        {eq name="templateItem.is_delete" value="0"}
+                                        <!-- {eq name="templateItem.is_remind" value="0"} -->
+                                            <button type="button" class="btn btn-success btn-sm mb-1" data-id="{$templateItem.id}" data-toggle="modal" data-target="#smallModal7">
+                                                <i class="fa fa-star"></i>&nbsp;发送提醒
+                                            </button>
+                                        </a>
+                                        {else/}
+                                            <button type="button" class="btn  btn-sm mb-1" data-id="{$templateItem.id}" data-toggle="modal" data-target="#smallModal8">
+                                                <i class="fa fa-star"></i>&nbsp;取消发送
+                                            </button>
+                                        </a>{/eq}
+                                        {/eq}
+                                    </td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 添加消息模板时弹出smallModal1 -->
+            <div class="modal fade" id="smallModal1" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" style="display: inline">添加模板</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                            <input id="itemTit" name="itemTitle" placeholder="标题：仅使用汉字、字母以及空格；以汉字或字母开始，以汉字、字母或数字结束；不超过30字符。" class="form-control" style="margin-bottom: 15px;" />
+                            <textarea id="itemCont" name="itemContent" placeholder="内容：长度不超过140个字符。" class="form-control" style='height:180px;' ></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"  id="add_cancel" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" id="submit_add" data-dismniss="modal">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="smallModal2" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="scrollmodalLabel">编辑模板</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-check-square-o"></i>
+                                    </div>
+                                    <input type="text" id="itemIdE" name="itemIdE" value="01" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <input type="text" id="itemDesE" name="itemDesE" value="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                   <div class="input-group-addon">
+                                       <i class="fa fa-pencil-square-o"></i>
+                                   </div>
+                                   <input type="text" id="itemcontain" name="itemcontain" value="" class="form-control">
+                               </div>
+                           </div>
+                            <div class="form-group">
+                                <div id="msg2"></div>
+                            </div>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="modify_cancel" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" id="submit_modify" data-dismiss="modal">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="smallModal3" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">删除模板</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            <div class="form-group">
+                                确定删除吗?
+                            </div>
+                            </p>
+                            <div class="form-group">
+                                <div id="msg3"></div>
+                            </div>
+                            <div>
+                                <input id="id" type="hidden"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="delete_cancel" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" id="submit_delete" data-dismiss="modal">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="smallModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+                        </div>
+                        <div class="modal-body">点击关闭按钮检查事件功能。</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary">提交更改</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+            <div class="modal fade" id="smallModal5" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-md" role="document" >
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" style="display: inline">查询模板</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" class="wrap-filter">
+                                <select id="itemStatus" name="status" class="form-control">
+                                    <option value="1">请选择查询状态：默认为正常</option>
+                                    <!-- <option value="0">全部</option> -->
+                                    <option value ="2">已删除</option>
+                                </select>
+                                </form>
+                            </br>
+                                <form action="" class="wrap-filter">
+                                    <select id="itemRange" name="range" class="form-control">
+                                        <option value="0">请选择查询范围：默认为全部</option>
+                                        <!-- <option value="0">全部</option> -->
+                                        <option value="1">标题</option>
+                                        <option value ="2">内容</option>
+                                    </select>
+                                 </form>
+                            </br>
+                                <input id="itemSearch" name="itemSearch" placeholder="请输入查询内容" class="form-control" style="margin-bottom: 15px;"/>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"  id="search_cancel" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-success" id="submit_search" data-dismiss="modal">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="smallModal6" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">恢复模板</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            <div class="form-group">
+                                确定恢复吗?
+                            </div>
+                            </p>
+                            <div class="form-group">
+                                <div id="msg6"></div>
+                            </div>
+                            <div>
+                                <input id="id" type="hidden"/>
+                                <input id="title" type="hidden"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="delete_renew" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" id="submit_renew" data-dismiss="modal">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    
+
+            <!-- 发送模板提示 -->
+            <div class="modal fade" id="smallModal7" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">发送消息提醒</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                    <div class="form-group">
+                                            消息提醒标题为：
+                                    </div>
+                                    
+                                    <div  class="form-group">
+                                         
+                                        <input type="text" id="Dese" name="Dese" value="01" class="form-control" disabled="disabled">
+                                       
+                                    </div>
+                            
+                            <div class="form-group">
+                                确定发送该消息提醒吗?
+                            </div>
+                            </p>
+                            <div class="form-group">
+                                <div id="msg7"></div>
+                            </div>
+                            <div>
+                                <input id="id" type="hidden"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="remind_cancel" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" id="submit_remind" data-dismiss="modal">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 取消发送消息提醒 -->
+
+            <div class="modal fade" id="smallModal8" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">取消消息提醒</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                        <div class="form-group">
+                                                已发送的消息标题为：
+                                        </div>
+                                        
+                                        <div  class="form-group">
+                                             
+                                            <input type="text" id="Hese" name="Hese" value="01" class="form-control" disabled="disabled">
+                                           
+                                        </div>
+                                
+                                <div class="form-group">
+                                    确定取消该消息提醒吗?
+                                </div>
+                                </p>
+                                <div class="form-group">
+                                    <div id="msg8"></div>
+                                </div>
+                                <div>
+                                    <input id="id" type="hidden"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="remind_cancel" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-success" id="submit_cancel" data-dismiss="modal">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </div>
+    <!-- .animated -->
+</div>
+{/block}
+{block name="scripts"}
+<script type="text/javascript">
+    $('#smallModal1').on('show.bs.modal', function (e) {
+        $("#msg1").html("");
+    });
+    $('#smallModal4').on('show.bs.modal', function (e) {
+        $("#myModalLabel").html("模态框的标题");
+    });
+
+    $("#add_cancel").on("click", function(){
+        $("#itemTit").val("");
+    });
+
+    //添加消息模板
+    $("#submit_add").on("click", function(){
+        var titS = $("#itemTit").val().toLowerCase();
+        var conS = $("#itemCont").val();
+        var tit = titS.replace(/(^\s*)|(\s*$)/g, "");
+        var con = conS.replace(/(^\s*)|(\s*$)/g, "");
+        console.log("|",tit,"|",con);
+        var titNum = tit.length;
+        var conNum = con.length;
+        if(titNum == 0){
+            alert('请输入模板标题！');
+            return false;
+        }
+        if(titNum > 30){
+            alert('模板标题长度不超过30个字符！');
+            return false;
+        }
+        var regTit=/^[\u4e00-\u9fa5a-z][\u4e00-\u9fa5a-z0-9\s]{0,28}[\u4e00-\u9fa5a-z0-9]?$/; 
+        var regCon=/[\u4e00-\u9fa5A-Za-z]/;
+        if(!regTit.test(tit)){  //验证标题格式 
+            alert('模板标题格式错误！');
+            return false; 
+        }
+        
+        if(conNum == 0){
+            alert('请输入模板内容！');
+            return false;
+        }
+        if(conNum > 140){
+            alert('模板内容过长！')
+            return false;
+        }
+        if(!regCon.test(con)){
+            alert('模板内容必须含有汉字或字母！');
+            return false; 
+        }
+        //$("#smallmodal1").modal(true,true,true,false);
+        
+
+        $.ajax({
+            url:"{:url('msgmanage/Msgmodel/addTemplate')}",
+            type:"POST",
+            data:{"tit":tit, "con":con},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+    });
+
+    $('#smallModal2').on('show.bs.modal', function (e) {
+        var ele = e.relatedTarget.parentNode.parentNode;
+        var id = $(e.relatedTarget).data("id");
+        // var content = $(e.relatedTarget).data("content");
+        var content = ele.cells[2].innerText;
+        var des = ele.cells[1].innerText;
+        /* var id = $(e.relatedTarget).data("id");
+        var des = $(e.relatedTarget).data("des"); */
+        $("#itemIdE").val(id);
+        $("#itemDesE").val(des);
+        $("#itemcontain").val(content);
+        $("#msg2").html("");
+    });
+    $("#modify_cancel").on("click", function(){
+        $("#itemDesE").val("");
+
+    });
+    $("#submit_modify").on("click", function(){
+        var id = $("#itemIdE").val();
+        var des = $("#itemDesE").val();
+        var content = $("#itemcontain").val();
+        console.log(content);
+        $.ajax({
+            url:"{:url('msgmanage/Msgmodel/modifyTemplate')}",
+            type:"POST",
+            data:{"id":id,"des":des,"content":content},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+    });
+    $('#smallModal3').on('show.bs.modal', function (e) {
+        var ele = e.relatedTarget.parentNode.parentNode;
+        var id = $(e.relatedTarget).data("id"); 
+        /* var id = $(e.relatedTarget).data("id"); */
+        $("#id").val(id);
+        $("#msg3").html("");
+    });
+    $("#delete_cancel").on("click", function(){
+        $("#id").val("");
+
+    });
+    $("#submit_delete").on("click", function(){
+        var id = $("#id").val();
+        
+        console.log(id);
+        $.ajax({
+            url:"{:url('msgmanage/Msgmodel/deleteTemplate')}",
+            type:"POST",
+            data:{"id":id},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+    });
+    $("#submit_sure").click(function(){
+
+        window.location.reload();
+    });
+    //显示消息modal,信息设为msg
+    function hintShow(msg){
+        $(document).ready(function() {
+            $('#smallModal4').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+        });
+    }
+// 消息提醒
+    $('#smallModal7').on('show.bs.modal', function (e) {
+        
+        var ele = e.relatedTarget.parentNode.parentNode;
+        // var id = ele.cells[0].innerText;
+        var id = $(e.relatedTarget).data("id");
+  
+        var des = ele.cells[1].innerText;
+       
+        $("#id").val(id);
+         $("#Dese").val(des);
+         
+        $("#msg7").html("");
+    });
+    $("#remind_cancel").on("click", function(){
+        $("#id").val("");
+        $("#DesE").val("");
+
+    });
+    $("#submit_remind").on("click", function(){
+       
+        var id = $("#id").val();
+        console.log(id);
+        window.location.href='../../../../public/index.php/msgmanage/whitelist/index.html?'+id;
+    });
+// 取消发送消息提醒
+$('#smallModal8').on('show.bs.modal', function (e) {
+        
+        var ele = e.relatedTarget.parentNode.parentNode;
+        // var id = ele.cells[0].innerText;
+        var des = ele.cells[1].innerText;
+        var id = $(e.relatedTarget).data("id"); 
+        $("#id").val(id);
+         $("#Hese").val(des);
+        $("#msg8").html("");
+    });
+    $("#remind_cancel").on("click", function(){
+        $("#id").val("");
+        $("#HesE").val("");
+
+    });
+    $("#submit_cancel").on("click", function(){
+   
+        
+        var id = $("#id").val();
+        console.log(id);
+        $.ajax({
+            url:"{:url('msgmanage/msgmodel/cancelremind')}",
+            type:"POST",
+            data:{"user_id":id},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+    });
+    /*story:查询消息模板
+    负责人：吴珏
+    */
+    $('#buttonRefresh').click(function(){
+        window.location.href = window.location.href.split('?')[0];
+    });
+
+    $('#smallModal6').on('show.bs.modal', function (e) {
+        var ele = e.relatedTarget.parentNode.parentNode;
+        var id = ele.cells[0].innerText;
+        var title = ele.cells[1].innerText;
+        /* var id = $(e.relatedTarget).data("id"); */
+        $("#id").val(id);
+        $("#title").val(title);
+        $("#msg6").html("");
+    });
+    $("#renew_cancel").on("click", function(){
+        $("#id").val("");
+
+    });
+    $("#submit_renew").on("click", function(){
+        var id = $("#id").val();
+        var tit = $("#title").val();
+        console.log(id+"   "+tit);
+        $.ajax({
+            url:"{:url('msgmanage/Msgmodel/enableTemplate')}",
+            type:"POST",
+            data:{"id":id,"tit":tit},
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                alert(data.msg);
+                window.location.reload();
+            }
+        })
+    });
+
+    
+    $('#buttonSearch').on("click",function(){
+        console.log("click");
+        // window.location.reload();
+    });
+
+    $("#submit_search").on("click", function(){
+        var status = $("#itemStatus").val();
+        var search = $("#itemSearch").val();
+        var range = $("#itemRange").val();
+        // window.location.reload();
+        // var list = document.getElementsByName("templateItems");
+        // console.log(list);
+        // console.log(href);
+        console.log(window.location.href);
+        // window.location.href = window.location.href.split('?')[0];
+        // console.log(window.location.href);
+        window.location.href = window.location.href.split('?')[0] + '?status=' + status + '&search=' + search + '&range=' + range;
+        console.log(window.location.href)
+    });
+        // $.ajax({
+        //     url:"{:url('msgmanage/Msgmodel/searchTemplate')}",
+        //     type:"POST",
+        //     data:{"status":status, "search":search,"range":range},
+        //     dataType: "json",
+        //     success: function (data) {
+        //         console.log("data",data);
+        //         if(data.length==null)
+        //         { 
+        //             alert(data.msg);
+        //             window.location.reload();
+        //         }
+        //         document.write(data);
+        //         console.log("data.length",data.length);
+                // console.log(queryParams);
+                // console.log(data[0]);
+                // var tb = document.getElementById('bootstrap-data-table');
+                // // console.log(tb.rows.length);
+                // tb.rows[0].cells[3]='';
+                // // console.log(tb);
+                // for(i=data.length+1;i<tb.rows.length;i++){
+                //     for(j=0;j<4;j++){
+                //         var td = tb.rows[i].cells[j];
+                //         td.innerHTML = '';
+                //         }
+                // }
+                // // console.log(data[0]);
+                // for(i=1;i<data.length+1;i++){
+                //     tb.rows[i].cells[0].innerHTML=data[i-1]['id'];
+                //     tb.rows[i].cells[1].innerHTML=data[i-1]['title'];
+                //     tb.rows[i].cells[2].innerHTML=data[i-1]['content'];
+                // }
+            //}
+            
+        //})
+    //});
+
+</script>
+<!-- /.content -->
+{/block}

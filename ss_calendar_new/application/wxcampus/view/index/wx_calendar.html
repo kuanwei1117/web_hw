@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.0/weui.css">
+    <title>我的日程</title>
+    <style>
+        .weui-flex {
+            background-color: #FFFFFF;
+            text-align: center;
+            padding-bottom: 10px;
+
+        }
+
+        .selected-day {
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: auto;
+            margin-bottom: auto;
+            background-color: #07C160;
+            color: #FFFFFF;
+            width: 32px;
+            height: 32px;
+            border-radius: 3px;
+
+        }
+
+        a {
+            color: black;
+            font-size: 17px;
+        }
+
+        .week {
+            color: #9b9b9b;
+            font-size: 15px;
+            font-weight: bolder;
+        }
+
+        .margintop30 {
+            margin-top: 30px;
+        }
+
+        .today-subscript {
+            height: 5px;
+            width: 5px;
+            text-align: center;
+            border-radius: 50%;
+            background-color: #07C160;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+
+</head>
+<body ontouchstart style="height: 100%; background-color: #ededed">
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div style="top: 0px;z-index:9999;width: 100%">
+            <div class="weui-flex" style="padding-top: 10px">
+                <div class="weui-flex__item">
+                    <div class="placeholder" style="text-align: left;margin-left: 21px; color: #07C160">
+                        <a href="{$left}">
+                            <img src="__STATIC__/wx/img/before.png" style="height: 17px" id="left">
+                        </a>
+                    </div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder" style="font-size: 17px" id="date">{$date}</div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder" style="text-align: right;margin-right: 21px; color: #07C160">
+                        <a href="{$right}">
+                            <img src="__STATIC__/wx/img/after.png" style="height: 17px" id="right">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-flex week">
+                <div class="weui-flex__item">
+                    <div class="placeholder">日</div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder">一</div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder">二</div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder">三</div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder">四</div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder">五</div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder">六</div>
+                </div>
+            </div>
+            <div class="weui-flex days">
+                <div class="weui-flex__item">
+                    <div class="placeholder"><a href="#">5</a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder"><a href="#">6</a>
+                        <div style="height: 5px;width: 5px;text-align:center;border-radius: 50%; background-color:  #07C160;display: block;margin-left: auto;margin-right: auto"></div>
+                    </div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder"><a href="#">7</a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder"><a href="#">8</a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder"><a href="#">9</a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <a href="#" class="placeholder">
+                        <div class="today">10</div>
+                    </a>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder"><a href="#">11</a></div>
+                </div>
+            </div>
+        </div>
+
+        {volist name="cells" id="cell"}
+        <div class="weui-cells">
+            <div class="weui-panel__hd" style="padding: 10px 16px 10px;color:#9b9b9b;">
+                <div style="width: 4px;height: 15px;background-color:#FA5151;display:inline-block;vertical-align:middle;margin: 0 10px 3px 10px"></div>
+                {$cell.time}
+            </div>
+            {volist name="cell['data']" id="vo"}
+            <div class="weui-panel__bd">
+                <a href="{:url('updatePage', ['wxcode' => $wxcode, 'userid' => $userid,'id'=> $vo.id])}"
+                   class="weui-media-box weui-media-box_appmsg"
+                   style="padding: 10px;margin-left: 15px">
+                    <div>
+                        <img style="width: 14px;height: 14px;padding:2px 10px 18px 0px"
+                             src="__STATIC__/wx/img/dian.png">
+                    </div>
+                    <div class="weui-media-box__bd">
+                        <h4 class="weui-media-box__title">{$vo.item}</h4>
+                        <p class="weui-media-box__desc">{$vo.note}</p>
+                    </div>
+
+                    <div class="weui-cell__ft">
+                        <div style="margin-top: 0">{$vo.place}</div>
+
+                    </div>
+                </a>
+            </div>
+            {/volist}
+        </div>
+        {/volist}
+        <div class="weui-btn-area" style="position: fixed;bottom:70px ;right:5px;z-index:9999;">
+
+            <a class="weui-btn weui-btn_block weui-btn_primary"
+               href="{:url('createPage', ['wxcode' => $wxcode, 'userid' => $userid])}" id="showTooltips"
+               style="padding: 0px;font-size: 30px;width: 47px;height: 47px;border-radius: 50%">+</a>
+
+        </div>
+    </div>
+
+        {include file="../application/wxcampus/view/index/nav.html"}
+
+</div>
+</body>
+{literal}
+<script src="__STATIC__/assets/js/vendor/jquery-2.1.4.min.js"></script>
+<script>
+
+    // $(document).ready(function(){
+    //    $('#left').click(function(){
+    //         var datestr = $('#date').text();
+    //         var timestamp = new Date(datestr.replace(/-/g, '/')).getTime();
+    //         timestamp -= 1000 * 60 * 60 * 24;
+    //         var yesterday =new Date(timestamp);
+    //         location.href = 'Index?date=' + yesterday.getFullYear() + '-' + (yesterday.getMonth()+1) + '-' + yesterday.getDate();
+    //    });
+    //    $('#right').click(function(){
+    //         var datestr = $('#date').text();
+    //         var timestamp = new Date(datestr.replace(/-/g, '/')).getTime();
+    //         timestamp += 1000 * 60 * 60 * 24;;
+    //         var tomorrow =new Date(timestamp);
+    //         location.href = 'Index?date=' + tomorrow.getFullYear() + '-' + (tomorrow.getMonth()+1) + '-' + tomorrow.getDate();
+    //    });
+    // });
+</script>
+{/literal}
+</html>
+

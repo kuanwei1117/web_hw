@@ -1,0 +1,303 @@
+{extend name="common@public/base" /}
+{block name='main-content'}
+
+<!-- Content -->
+        <div class="content">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="box-title">所有日程
+                                </h4>
+                            </div>
+                            <div class="card-body--">
+                                <div class="table-stats">
+                                    <table id="bootstrap-data-table" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="serial">序号</th>
+                                                <th>姓名</th>
+                                                <th>身份</th>
+                                                <th>时间</th>
+                                                <th>地点</th>
+                                                <th>事项</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            {notempty name="user_schedule"}
+                                            {foreach name="user_schedule" item="change_info"}
+                                            <tr>
+                                                <td  id="id" class="serial">{$change_info['id']}
+                                                    
+                                                </td> 
+                                                <td id="user_info_name"><span class="product">{$change_info['user_info_name']}</span>
+                                                    <input type="hidden" id="user_id" name="user_id" >
+                                                    </td>
+                                                
+                                                <td id="user_position_name"><span class="product">{$change_info['user_position_name']}</span>
+                                                    </td>
+                                                
+                                                <td id="date" ><span class="product">{$change_info['date']}{$change_info['schedule_time_name']}</span>
+                                                    <input type="hidden" id="time_id" name="time_id">
+                                                    </td>
+
+                                                <td id="schedule_place_name"><span class="product">{$change_info['schedule_place_name']}</span>
+                                                    <input type="hidden" id="place_id" name="place_id"></td>
+                                                <td id="schedule_item_name"><span class="product">{$change_info['schedule_item_name']}</span>
+                                                    <input type="hidden" id="item_id" name="item_id"></td>
+                                                
+
+                                                
+                                                <td><!--
+                                                    <a href="{:url('index/index/modifySchedule')}?id={$change_info.id}">
+                                                    </a>   
+                                                    <button type="button" class="btn btn-primary btn-sm mb-1"  id="confirm_change" data-id="{$change_info.id}" data-target="#smallmodal" data-toggle="modal">
+                                                            <i class="fa fa-magic"></i>&nbsp;修改
+                                                        </button>      
+                                                    <a href=" 'index/modifySchedule')}?id={$change_info.id} & user_info_name={$change_info.user_info_name} & schedule_place_name={$change_info.schedule_place_name}
+                                                        & schedule_item_name={$change_info.schedule_item_name} & user_position_name={$change_info.user_position_name} & date={$change_info.date} & schedule_time_name={$change_info.schedule_time_name}">
+                                                    </a>-->
+                                                        <button type="button" class="btn btn-primary btn-sm mb-1" data-time="{$change_info.time_id}" data-place="{$change_info.place_id}" data-item="{$change_info.item_id}"data-id="{$change_info.id}" data-target="#smallmodal" data-toggle="modal" >
+                                                    <i class="fa fa-magic"></i>&nbsp;修改
+                                                </button>                                                                                  
+                                                </td>                                             
+                                            </tr> 
+                                            {/foreach}
+                                            {/notempty} 
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--编辑日程信息-->
+             
+                <div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editmodalLabel">编辑日程信息</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="id" name="id"/>
+                                <p>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <input type="text" id="user_info_name" name="user_info_name"  value="" class="form-control" disabled="disabled"> 
+                            
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-credit-card"></i>
+                                        </div>
+                                        <input type="text" id="user_position_name" name="user_position_name" value="" class="form-control" disabled="disabled" > 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-group"></i>
+                                        </div>
+                                        <div >
+                                        <input type="date" id="date" name="date" value="" class="form-control" > 
+
+                                        <select id="schedule_time_name" name="schedule_time_name" class="form-control">
+                                            {foreach name="user_time" item="time_info"}   
+                                            <option value="{$time_info.id}">{$time_info.name}</option>
+                                            {/foreach}    
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-group"></i>
+                                        </div>
+                                        
+                                        <select name="schedule_place_name" id="schedule_place_name" class="form-control">
+                                            {foreach name="user_place" item="place_info"}   
+                                            <option value="{$place_info.id}">{$place_info.name}</option>
+                                            {/foreach}
+                                            
+                                            
+                                        </select>
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-group"></i>
+                                        </div>
+                                        <select name="schedule_item_name" id="schedule_item_name" class="form-control">
+                                        {foreach name="user_item" item="item_info"}   
+                                            <option value="{$item_info.id}">{$item_info.name}</option>
+                                        {/foreach}
+                                        </select>
+
+                                    </div>
+                                </div>
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <button type="submit" class="btn btn-success" id="confirm_change" onclick="javascript:return mod();">确认</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- /.content -->
+{/block}
+
+
+{block name="scripts"}
+<script type="text/javascript">
+    //确认修改前，弹出提示框
+    function mod() {
+    var msg = "您真的确定要修改吗？\n\n请确认！";
+    if (confirm(msg)==true){
+    return true;
+    }else{
+    return false;
+    }
+    }
+    // 修改时间段描述 模态框
+    $('#smallmodal').on('show.bs.modal', function (event) {
+        
+var btnThis = $(event.relatedTarget); //触发事件的按钮
+var modal = $(this);  //当前模态框
+var modalId = btnThis.data('id');   //解析出data-id的内容
+var modal_time_id = btnThis.data('time'); 
+var modal_place_id = btnThis.data('place'); 
+var modal_item_id = btnThis.data('item'); 
+var id = btnThis.closest('tr').find('td').eq(0).text();
+var user_info_name = btnThis.closest('tr').find('td').eq(1).text();
+var user_position_name = btnThis.closest('tr').find('td').eq(2).text();
+var date = btnThis.closest('tr').find('td').eq(3).text().slice(0,10);
+var schedule_time_name = btnThis.closest('tr').find('td').eq(3).text().slice(10);
+var schedule_place_name = btnThis.closest('tr').find('td').eq(4).text();
+var schedule_item_name = btnThis.closest('tr').find('td').eq(5).text();
+
+console.log(id);
+console.log(user_info_name);
+console.log(user_position_name);
+console.log(date);
+console.log(schedule_time_name);
+console.log(schedule_place_name);
+console.log(schedule_item_name);
+console.log(modalId);
+console.log(modal_time_id);
+console.log(modal_place_id);
+console.log(modal_item_id);
+  //alert(schedule_place);
+  //console.log(order);
+modal.find('#id').val(id);      
+modal.find('#user_info_name').val(user_info_name);      
+modal.find('#user_position_name').val(user_position_name); 
+modal.find('#date').val(date);   
+modal.find('#schedule_time_name').val(modal_time_id);
+modal.find('#schedule_place_name').val(modal_place_id);
+modal.find('#schedule_item_name').val(modal_item_id);
+if (schedule_place_name ) {
+    //console.log($("#schedule_place_name").val("2"));
+    //console.log($("#schedule_place_name").find("option:contains('"+modal_place_id+"')").val());
+    //$("#schedule_place_name").find("option:contains('"+modal_place_id+"')").attr("selected","selected");
+    $("#schedule_place_name").val(modal_place_id);
+    //$("#schedule_place_name").find("option[value='"+modal_place_id+"']").attr("selected",true);
+
+    //$("#schedule_place_name").change();
+   //$("#schedule_place_name").val('"+modal_place_id+"');
+}
+if (schedule_time_name ) {
+    $("#schedule_time_name").val(modal_time_id);
+}
+
+
+if (schedule_item_name ) {
+    $("#schedule_item_name").val(modal_item_id);
+}
+
+});
+
+
+    // 确认修改ajax
+    $("#confirm_change").click(function(){
+      //先略过不合法输入,只做trim处理
+    // console.log("123");
+    var modal = $('#smallmodal');
+    var id = $.trim(modal.find('#id').val());
+    var user_info_name = $.trim(modal.find('#user_info_name').val());
+    var user_position_name = $.trim(modal.find('#user_position_name').val());
+    var date = modal.find('#date').val();
+    var schedule_time_name = $.trim(modal.find('#schedule_time_name').val());
+    var schedule_time_text = $.trim(modal.find('#schedule_time_name').find("option:selected").text());
+    var schedule_place_name = $.trim(modal.find('#schedule_place_name').val());
+    var schedule_place_text = $.trim(modal.find('#schedule_place_name').find("option:selected").text());
+    var schedule_item_name = $.trim(modal.find('#schedule_item_name').val());
+    var schedule_item_text = $.trim(modal.find('#schedule_item_name').find("option:selected").text());
+    console.log("1"+id);
+    console.log("2"+user_info_name);
+    console.log("3"+user_position_name);
+    console.log("4"+date);
+    console.log("5"+schedule_time_name);
+    console.log("6"+schedule_time_text);
+    console.log("7"+schedule_place_name);
+    console.log("8"+schedule_place_text);
+    console.log("9"+schedule_item_name);
+    console.log("10"+schedule_item_text);
+
+    // if(date.length === 0 || schedule_place_name.length === 0 ||schedule_item_name.length === 0 ||schedule_time_name.length === 0)
+    // {
+    //     alert('输入不能为空');
+    //     return;
+    // }
+    // if(schedule_place_text == schedule_place_name & schedule_item_text == schedule_item_name & schedule_time_text  == schedule_time_name)
+    // {
+    //     alert('并未修改信息');
+    //     return;
+    // }       
+
+      //post方法修改
+    $.post("{:url('Modifyschedule/modifySchedule')}",
+    {
+        id:id,
+        user_info_name:user_info_name,
+        user_position_name:user_position_name,
+        date : date,
+        time_id:schedule_time_name, //这里schedule_time_name实际值用的time_id，因为要传后端
+        place_id : schedule_place_name,//schedule_place_name，schedule_item_name同上
+        item_id : schedule_item_name,
+        schedule_time_name:schedule_time_text,
+        schedule_place_name:schedule_place_text,
+        schedule_item_name:schedule_item_text
+    },
+    function(data,status){
+
+        if(data == "更新成功")
+            window.location.reload();
+        else
+            alert(data);
+    });
+});
+
+</script>
+{/block}

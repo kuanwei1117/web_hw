@@ -1,0 +1,268 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">部门&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#smallmodal1">添加部门</button>
+                        </h4>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                <tr>
+                                    <th class="serial" style="width: 15%">部门编号</th>
+                                    <th style="width: 25%">部门名称</th>
+                                    <th style="width: 20%">状态</th>
+                                    <th style="width: 40%">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="depart_info">
+                                {volist name="departlist" id="vo"}
+                                <tr>
+                                    <td class="serial">{$i}</td>
+                                    <td><span class="product {$vo.id}">{$vo.name}</span></td>
+                                    <td><span class="product">{eq name="vo.is_delete" value="0"}正常{else/}已作废{/eq}</span>
+                                    </td>
+                                    <td>
+                                        {if condition="$vo.is_delete eq 1"}
+                                        <button type="button"
+                                                onclick="recoverDepartment('{$vo.id}', '{$vo.name}')"
+                                                class="btn btn-recover btn-sm mb-1" >
+                                            <i class="fa fa-rotate-left"></i>&nbsp;恢复
+                                        </button>
+                                        {else /}
+                                        <button type="button"
+                                                class="btn btn-primary btn-sm mb-1"
+                                                data-toggle="modal"
+                                                data-target="#smallmodal"
+                                                onclick="editModalShow('{$vo.id}', '{$vo.name}')">
+                                            <i class="fa fa-magic"></i>&nbsp;编辑
+                                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm mb-1"
+                                                onclick="deleteDepartment('{$vo.id}')">
+                                            <i class="fa fa-exclamation"></i>&nbsp;作废
+                                        </button>
+                                        {/if}
+                                    </td>
+
+
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .animated -->
+</div>
+<div class="modal fade" id="smallmodal1" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scrollmodalLabel">添加部门</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </div>
+                        <input type="text" id="name" placeholder="部门描述" class="form-control" value="" >
+                    </div>
+                </div>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-success" onclick="addDepartment()">确认</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel1" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scrollmodalLabel1">编辑部门</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <input hidden id="tmp_id">
+            </div>
+            <div class="modal-body">
+                <p>
+                    <!--<div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-check-square-o"></i>
+                            </div>
+                            <input type="text" class="form-control" disabled="disabled">
+                        </div>
+                    </div>-->
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </div>
+                        <input type="text" id="depart_name" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-success" onclick="changeDepartmentName()">确认</button>
+            </div>
+              </p>
+        </div>
+    </div>
+</div>
+</div>
+<!-- /.content -->
+{/block}
+{block name="scripts"}
+<script type="text/javascript">
+    $(document).ready(function () {
+        console.log("hello");
+    });
+    function deleteDepartment(id) {
+        //用AJAX方式访问后台写的方法
+        $.ajax({
+            type: "POST",
+            url: 'delete',//你的请求程序页面随便
+            async: false,//同步：意思是当有返回值以后才会进行后面的js程序。
+            data: {
+                "id":id
+            },//请求需要发送的处理数据
+            success: function (msg) {
+                //console.log("success!")
+                //在这里刷新页面或者局部刷新表格
+                alert("作废成功！");
+                window.location.reload();
+            },
+            error: function (msg) {
+                alert("作废失败！");
+            }
+        });
+    }
+    //story:恢复部门 负责人：李梦好
+    //id:待恢复部门的id
+    //name:待恢复部门的名称
+    function recoverDepartment(id,name) {
+        //console.log("recover department of id "+id+name);
+        if(confirm("确认恢复部门 "+name+"吗？")){
+            //用AJAX方式访问后台写的方法
+            $.ajax({
+                type: "POST",
+                url: 'recover',//请求方法的路径
+                async: false,//同步：意思是当有返回值以后才会进行后面的js程序。
+                data: {
+                    "id":id//传递参数：待恢复部门的id
+                },//请求需要发送的处理数据
+                success: function (msg) {
+                    //msg包含status和message两个属性，status为1时是成功。
+                    if(msg.status==-1)//恢复失败
+                    {
+                        alert(msg.message);
+                    }else//成功
+                    {
+                        alert("恢复成功！");
+                        //在这里刷新页面或者局部刷新表格
+                        window.location.reload();
+                    }
+                },
+                error: function (msg) {
+                    alert("恢复失败！");
+                }
+            });
+        }
+    }
+
+    function addDepartment(name)
+    {
+        var name = $('#name').val().trim();
+        $.ajax({
+            type: "POST",
+            url: "add",
+            async: false,
+            //dataType: 'json',
+            data: {
+                "name":$("#name").val()
+            },
+            success: function(data){
+                //console.log(data);
+                if(data.status==1){
+                    alert(data.message);
+                    $("#smallmodal1").modal("hide");
+                    //$('.modal-backdrop').remove();//去除遮罩层
+                    window.location.reload();
+                }else {
+                    alert(data.message);
+                }
+
+            }
+        });
+      
+    }
+    function editModalShow(id,name) {
+        console.log(id);
+        $('#tmp_id').val(id);
+        $("#depart_name").val(name);
+        //$("#smallmodal").modal("show");
+    }
+  
+    function changeDepartmentName(){
+        var id = $("#tmp_id").val();
+        var name = $('#depart_name').val().trim();
+       	var pattern="[^\u4e00-\u9fa5a-zA-Z0-9]";
+        if(name.length == 0){
+          alert("部门名称不能为空，请重新输入");
+        }else if(name.search(pattern)==true){
+            alert("部门名称不符合规范，请重新输入");
+        }else{
+            //用AJAX方式访问后台写的方法
+            $.ajax({
+                type: "POST",
+                url: 'change',//你的请求程序页面随便
+                async: false,//同步：意思是当有返回值以后才会进行后面的js程序。
+                data: {
+                    "id":id,
+                    "name":name
+                },//请求需要发送的处理数据
+                success: function (msg) {
+                    console.log("success!"+msg);
+                	if(msg==1){
+                    	alert("修改成功！");
+               	 	}
+                	else if(msg==-1){
+                    	alert("部门名称已存在，请重新输入！");
+                	}
+                    else if(msg==-2){
+                    	alert("部门名称过长，请重新输入！");
+                	}
+                    else if(msg==-3){
+                    	alert("部门名称不符合规范，请重新输入！");
+                	}
+                    $("#smallmodal").modal("hide");
+                    //$('.modal-backdrop').remove();//去除遮罩层
+                    //在这里刷新页面或者局部刷新表格
+                    window.location.reload();
+                }
+            });
+        }
+
+    }
+</script>
+{/block}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+{include file='common@public:header' /}
+<!--其他样式-->
+
+<!--其他样式-->
+
+<body>
+
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card-body--">
+                    <div class="table-stats">
+                        <table id="bootstrap-data-table" class="table">
+                            <thead>
+                            <tr>
+                                <th class="serial">序号</th>
+
+                                <th>时间</th>
+                                <th>地点</th>
+                                <th>事项</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {volist name= 'schedule_info' id='list'}
+                            <tr>
+                                <td class="serial">{$i}</td>
+                                <td>  <span class="product">{$list.date}</span> </td>
+                                <td>  <span class="product">{$list.place}</span> </td>
+                                <td> <span class="product">{$list.item}</span> </td>
+                            </tr>
+                            {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .animated -->
+</div>
+
+<!-- /.content -->
+</body>
+</html>

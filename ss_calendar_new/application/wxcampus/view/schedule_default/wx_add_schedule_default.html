@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.0/weui.css">
+    <title>{$title}</title>
+</head>
+<body style="height: 100%; background-color: #ededed">
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-cells">
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">时间</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2" id="day">
+                        <option value="1">周一</option>
+                        <option value="2">周二</option>
+                        <option value="3">周三</option>
+                        <option value="4">周四</option>
+                        <option value="5">周五</option>
+                        <option value="6">周六</option>
+                        <option value="7">周日</option>
+                    </select>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2" id="time">
+                        {volist name="times" id="time" empty="没有可选的时间列表，请联系管理员"}
+                        <option value="{$time['name']}">{$time['name']}</option>
+                        {/volist}
+                        <!--option value="上午">上午</option>
+                        <option value="下午">下午</option>
+                        <option value="晚上">晚上</option>
+                        <option value="其他">其他</option-->
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">地点</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2" id="place">
+                        {volist name="places" id="place" empty="没有可选的地点列表，请联系管理员"}
+                        <option value="{$place['name']}">{$place['name']}</option>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after" >
+                <div class="weui-cell__hd">
+                    <label class="weui-label">事项</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2" id="item">
+                        {volist name="items" id="item" empty="没有可选的事项列表，请联系管理员"}
+                        <option value="{$item['name']}">{$item['name']}</option>
+                        {/volist}
+                        <!--option value="上课">上课</option>
+                        <option value="开会">开会</option>
+                        <option value="其他">其他</option-->
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells__title">事项描述</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" id="note" placeholder="请输入文本" rows="2" ></textarea>
+                    <div class="weui-textarea-counter"><span id="current-word-counter">0</span>/2000</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-btn-area">
+            <span id='callbackstatus'></span>
+            <a class="weui-btn weui-btn_block weui-btn_primary" onclick="addDefaultSchedule()" id="yes-btn">确定</a>
+            <a class="weui-btn weui-btn_block weui-btn_primary" onclick="window.history.back()" id="cancel-btn">返回</a>
+        </div>
+    </div>
+
+</div>
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    window.onload=function () {
+        $("#note").bind("input propertychange",function () {
+            $("#current-word-counter").innerHTML=$("#note").val().length;
+        })
+        // $("#note").addEventListener("propertychange",function () {
+        //     $("#current-word-counter").innerHTML=$("#note").val().length;
+        // })
+    }
+    /**添加默认事项，使用ajax向addDefaultSchedule方法发送请求*/
+    function addDefaultSchedule(){
+        var day=$('#day').val();
+        var time =  $('#time').val();
+        var place = $('#place').val();
+        var item = $('#item').val();
+        var note = $('#note').val();
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: "{:url('addDefaultSchedule',['uid'=>$uid])}",
+            data: {"day":day,"time":time,"place": place,"item":item ,"note":note},
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 1) {
+                    $("#callbackstatus").text("添加成功");
+                    setTimeout(function () {
+                        window.location.href="{:url('index',['uid'=>$uid,'wxcode'=>$wxcode,'name'=>$name,'number'=>$number])}";
+                    },1000)
+                }
+                else{
+                    alert('添加失败：' + data.msg);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

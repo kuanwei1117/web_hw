@@ -1,0 +1,52 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+{include file='common@public:header' /}
+<body>
+<div class="content">
+    <div class="animated fadeIn">                
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                            <h4 class="box-title">所有日程
+                            </h4>
+                        <form action="searchnames" method="post">
+                        多人查询(<b>请使用空格隔开</b>):&nbsp;&nbsp;&nbsp; 
+                        <input type="text" name="names" />
+                        <input type="submit" value="查询"/>
+                        </form>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>姓名</th>
+                                        <th>时间</th>
+                                        <th>地点</th>
+                                        <th>事项</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {volist name='info' id='list'}
+                                    <tr>
+                                        <td>  <span class="product">{$list.name}</span> </td>
+                                        <td>  <span class="product">{$list.date} {$list.time}</span> </td>
+                                        <td>  <span class="product">{$list.place}</span> </td>
+                                        <td> <span class="product">{$list.item}</span> </td>
+                                    </tr>
+                                    {/volist}
+                                </tbody>                                   
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>                                       
+        </div>
+    </div>
+    <!-- .animated -->
+</div>
+<!-- /.content -->
+</body>
+</html>

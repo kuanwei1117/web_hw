@@ -1,0 +1,335 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<!--suppress ALL -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">所有职位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#smallmodal1">添加职位
+                            </button>
+                        </h4>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                <tr>
+                                    <th class="serial">序号</th>
+                                    <th>职位</th>
+                                    <th>状况</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody id="position_info">
+
+                                                                {volist name="position_list" id="vo"}
+
+                                                                <tr>
+                                                                    <td class="serial">{$i}</td>
+                                                                    <td><span class="product {$vo.id}">{$vo.name}</span></td>
+                                                                    <td><span class="product">{eq name="vo.is_delete" value="0"}正常{else/}已作废{/eq}</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        {if condition="$vo.is_delete eq 1"}
+                                                                        <button type="button"
+                                                                                onclick="recoverPosition('{$vo.id}')"
+                                                                                class="btn btn-recover btn-sm mb-1" >
+                                                                            <i class="fa fa-rotate-left"></i>&nbsp;恢复
+                                                                        </button>
+                                                                        {else /}
+                                                                        <button type="button"
+                                                                                class="btn btn-primary btn-sm mb-1"
+                                                                                data-toggle="modal"
+                                                                                data-target="#smallmodal"
+                                                                                onclick="setData('{$vo.id}', '{$vo.name}')">
+                                                                            <i class="fa fa-magic"></i>&nbsp;编辑
+                                                                        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                        <button type="button"
+                                                                                class="btn btn-danger btn-sm mb-1"
+                                                                                onclick="invalid('{$vo.id}')">
+                                                                            <i class="fa fa-exclamation"></i>&nbsp;作废
+                                                                        </button>
+                                                                        {/if}
+                                                                    </td>
+
+
+                                                                </tr>
+                                                                {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="smallmodal1" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="scrollmodalLabel">添加职位</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <input type="text" id="name" placeholder="请输入职位描述" class="form-control" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-success" onclick="addPosition()">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .animated -->
+    </div>
+</div>
+<div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel1"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scrollmodalLabel1">编辑职位</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <input hidden id="tmp_id">
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </div>
+                        <input type="text" id="position_name" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-success" onclick="changePositionName()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<!-- /.content -->
+{/block}
+{block name="scripts"}
+<script type="text/javascript">
+    $(document).ready(function () {
+        //loadTable();
+    });
+
+    function setData(id, name) {
+        $("#tmp_id").attr('id_memory', id);
+        $('#position_name').val(name);
+    }
+
+
+    function recoverPosition(id) {
+        $.ajax({
+            type: "POST",
+            url: "restore",
+            async: false,
+            dataType: 'json',
+            data: {
+                "user_id": id
+            },
+            success: function () {
+                notifyAndRemoveModal("恢复成功");
+                //loadTable();
+                window.location.reload();
+            }
+        })
+    }
+
+    function invalid(id) {
+        $.ajax({
+            type: "POST",
+            url: "invalid",
+            dataType: 'json',
+            async: false,
+            data: {
+                "user_id": id
+            },
+            success: function () {
+                notifyAndRemoveModal("作废成功");
+                //loadTable();
+                window.location.reload();
+            }
+        })
+    }
+
+    function showModel1() {
+        $('#smallmodal1').addClass('show');
+    }
+
+    function addPosition() {
+       // console.log($('#name').val())
+        let n=$("#name");
+        var name=n.val();
+        //先做trim处理
+        var name_add= $.trim(name);
+        console.log(name_add);
+      //判断字符串长度
+        if (name_add.length>30){
+            alert("长度过长，请重新输入");
+        }else{
+          //判断输入是否为汉字数字和字母
+            var reg=  /^[\u4e00-\u9fa5\A-\Z\d\a-\z_()（）]+$/;
+            if(reg.test(name_add)){
+                $.ajax({
+                    type: "POST",
+                    url: "addPosition",
+                    async: false,
+                    dataType: 'json',
+                    data: {
+                        "name": name_add
+                    },
+                    success: function (data) {
+                            console.log(data);
+                            if(data.status==1){
+                                alert(data.msg);
+                                //$("#smallmodal1").modal("toggle");
+                                //$('.modal-backdrop').remove();//去除遮罩层
+                                window.location.reload();
+                                //notifyAndRemoveModal(data.msg);
+                                //loadTable();
+                            }else{
+                                alert(data.msg);
+                            }
+
+                    }
+                })
+            }else{
+                alert("输入非法，请重新输入");
+            }
+        }
+        //清除原有数据
+        n.val("");
+    }
+
+    function changePositionName() {
+        var id = $("#tmp_id").attr('id_memory');
+        var name = $('#position_name').val();
+        console.log(id, name);
+        $.ajax({
+            type: "POST",
+            url: 'change',//请求程序页面
+            async: false,//同步：当有返回值以后才会运行后面的js程序。
+            data: {
+                "id": id,
+                "name": name
+            },//请求需要发送的处理数据
+            success: function (data) {
+                console.log(data);
+                if (data.status == 1) {
+                    notifyAndRemoveModal(data.message);
+                    //loadTable();
+                    window.location.reload();
+                } else {
+                    alert(data.message);
+                }
+            }
+        });
+    }
+   
+    /*function changePositionName() {
+        var id = $("#tmp_id").attr('id_memory');
+        var name = $('#position_name').val();
+
+        $.ajax({
+            type: "POST",
+            url: 'change',//请求程序页面
+            async: false,//同步：当有返回值以后才会运行后面的js程序。
+            data: {
+                "id": id,
+                "name": name
+            },//请求需要发送的处理数据
+            success: function () {
+                notifyAndRemoveModal("编辑成功");
+                loadTable();
+            },
+            fail: function (msg) {
+                console.log(msg);
+            }
+
+        });
+    }*/
+
+    function notifyAndRemoveModal(msg) {
+        alert(msg);
+        $("#smallmodal").modal("hide");
+        $("#smallmodal1").modal("hide");
+        $('.modal-backdrop').remove();//去除遮罩层
+    }
+
+
+    function loadTable() {
+        $.ajax({
+            type: "POST",
+            url: 'loadPosition',
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                var table_html = "";
+                var note = ["正常", "已作废"];
+                for (var i = 0; i < data.length; i++) {
+                    var item = data[i]
+                    if (item.is_delete) {
+                        table_html += `<tr class="deleted">
+                                            <td class="serial">${i + 1}</td>
+                                            <td class="product">${item.name}</td>
+                                            <td class="product">${note[item.is_delete]}</td>
+                                            <td>
+                                                <button type="button"
+                                                        onclick="recoverPosition(${item.id})"
+                                                        class="btn btn-recover btn-sm mb-1" >
+                                                            <i class="fa fa-rotate-left"/>&nbsp;恢复
+                                                </button>
+                                            </td>
+                                        </tr>`;
+                    } else {
+                        table_html += `<tr>
+                                            <td class="serial">${i + 1}</td>
+                                            <td class="product">${item.name}</td>
+                                            <td class="product">${note[item.is_delete]}</td>
+                                            <td>
+                                                <button type="button"
+                                                class="btn btn-primary btn-sm mb-1"
+                                                data-toggle="modal"
+                                                data-target="#smallmodal"
+                                                onclick="setData(${item.id}, '${item.name}')">
+                                                    <i class="fa fa-magic"></i>&nbsp;编辑
+                                                </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <button type="button"
+                                                        class="btn btn-danger btn-sm mb-1"
+                                                        onclick="invalid(${item.id})">
+                                                        <i class="fa fa-exclamation"/>&nbsp;作废
+                                                </button>
+                                            </td>
+                                       </tr>`;
+                    }
+                }
+                $("#position_info").html(table_html);
+            }
+        });
+    }
+
+</script>
+{/block}

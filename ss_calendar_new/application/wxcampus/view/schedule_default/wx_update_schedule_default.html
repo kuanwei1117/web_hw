@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.0/weui.css">
+    <title>{$title}</title>
+</head>
+<body style="height: 100%; background-color: #ededed">
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-cells">
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">时间</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2" id="day">
+                        <option value="1" <?php if($day == 1){echo 'selected';} ?>>周一</option>
+                        <option value="2" <?php if($day == 2){echo 'selected';} ?>>周二</option>
+                        <option value="3" <?php if($day == 3){echo 'selected';} ?>>周三</option>
+                        <option value="4" <?php if($day == 4){echo 'selected';} ?>>周四</option>
+                        <option value="5" <?php if($day == 5){echo 'selected';} ?>>周五</option>
+                        <option value="6" <?php if($day == 6){echo 'selected';} ?>>周六</option>
+                        <option value="7" <?php if($day == 7){echo 'selected';} ?>>周日</option>
+                    </select>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2" id="time">
+                        <violist>
+                        <option value="上午" <?php if($time == '上午'){echo 'selected';}?>>上午</option>
+                        <option value="下午" <?php if($time == '下午'){echo 'selected';}?>>下午</option>
+                        <option value="晚上" <?php if($time == '晚上' ){echo 'selected';}?>>晚上</option>
+                        <option value="其他" <?php if($time == '其他'){echo 'selected';}?>>其他</option>
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">地点</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="select2" id="place">
+                        <option value="校本部" <?php if($place == '校本部'){echo 'selected';}?>>校本部</option>
+                        <option value="大兴" <?php if($place == '大兴校区'){echo 'selected';}?>>大兴</option>
+                        <option value="其他" <?php if($place == '其他'){echo 'selected';}?>>其他</option>
+                    </select>
+                </div>
+            </div>
+            <div class="weui-cell weui-cell_select weui-cell_select-after" >
+                <div class="weui-cell__hd">
+                    <label class="weui-label">事项</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <select class="weui-select" name="item" id="item">
+                        <option value="上课" <?php if($item == '上课'){echo 'selected';}?>>上课</option>
+                        <option value="开会" <?php if($item == '开会'){echo 'selected';}?>>开会</option>
+                        <option value="其他" <?php if($item == '其他'){echo 'selected';}?>>其他</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="weui-cells__title">事项描述</div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" id="note" placeholder="请输入文本" rows="2" ><?php echo str_replace('备注：', '', $note)?></textarea>
+                    <div class="weui-textarea-counter"><span id="current-word-counter">0</span>/2000</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-btn-area">
+            <span id='callbackstatus'></span>
+            <a class="weui-btn weui-btn_block weui-btn_primary"
+               id="yes-btn" onclick="update()">确定</a>
+            <a class="weui-btn weui-btn_block weui-btn_primary" onclick="window.history.back()" id="cancel-btn">返回</a>
+        </div>
+    </div>
+
+</div>
+
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    window.onload=function () {
+        $("#note").bind("input propertychange",function () {
+            $("#current-word-counter").innerHTML=$("#note").val().length;
+        })
+        // $("#note").addEventListener("propertychange",function () {
+        //     $("#current-word-counter").innerHTML=$("#note").val().length;
+        // })
+    }
+
+    function update(){
+        var day=$('#day').val();
+        var time =  $('#time').val();
+        var place = $('#place').val();
+        var item = $('#item').val();
+        var note = $('#note').val();
+        $.ajax({
+            type: "POST",
+            async: false,
+            data: {"day":day,"time":time,"place": place,"item":item ,"note":note},
+            url: "{:url('updateDefaultSchedule',['uid'=>$uid, 'id'=>$id])}",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 1) {
+                    $("#callbackstatus").text("修改成功");
+                    setTimeout(function () {
+                        window.location.href="{:url('index',['uid'=>$uid,'wxcode'=>$wxcode,'name'=>$name,'number'=>$number])}";
+                    },1000)
+                }
+                else{
+                    alert('修改失败：' + data.msg);
+                }
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

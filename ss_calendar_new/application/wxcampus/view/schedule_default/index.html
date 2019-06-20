@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.0/weui.css">
+    <title>默认日程</title>
+
+</head>
+<body ontouchstart style="height: 100%; background-color: #ededed">
+<div class="weui-tab">
+    <div class="weui-tab__panel">
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-flex" style="padding-top: 10px">
+                <div class="weui-flex__item">
+                    <div class="placeholder" style="text-align: left;margin-left: 21px; color: #07C160">
+                        <a onclick="window.history.back()">
+                            <img src="__STATIC__/wx/img/before.png" style="height: 17px" id="left">
+                        </a>
+                    </div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder" style="font-size: 17px" id="title">默认日程列表</div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder" style="text-align: right;margin-right: 21px; color: #07C160">
+                        <a href="{:url('Index/index',['wxcode'=>$wxcode,'name'=>$name,'number'=>$number,'userid'=>$uid])}">
+                            <img src="__STATIC__/wx/img/wode.png" style="height: 17px" id="right" >
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {volist name="defaultSchedules" id="schedule" empty="空空如也"}
+            <a class="weui-cell  weui-cell_example" >
+                <div class="weui-cell__hd"><img src="__STATIC__/wx/img/richeng_on.png" alt=""
+                                                style="width:50px;margin-right:16px;display:block;border-radius: 5px">
+                </div>
+                <div class="weui-cell__bd">
+                    <h4 class="weui-media-box__title">{$schedule->getDay().$schedule->getTime()}</h4>
+                    <p class="weui-media-box__desc">{$schedule->getPlace()}　－＞　{$schedule->getItem()}</p>
+                    <p class="weui-media-box__desc">备注：{$schedule->note}</p>
+                </div>
+                <div class=" weui-cell__ft">
+                </div>
+                <div>
+                    <!--'item_id'=>$schedule->item_id,
+                    'day'=>$schedule->getDay(), 'time'=>$schedule->getTime(),'place'=>$schedule->getPlace(),
+                    'item'=>$schedule->getItem(), 'place_id'=>$schedule->place_id,
+                              'note'=>$schedule->note,-->
+                    <a href="{:url('wx_update_schedule_default',['uid'=>$uid, 'id'=>$schedule->id ,'wxcode'=>$wxcode,'name'=>$name,'number'=>$number])}">修改</a>
+                    <a  href="{:url('wx_delete_schedule_default',['id'=>$schedule->id,'uid'=>$uid, 'wxcode'=>$wxcode,'name'=>$name,'number'=>$number])}" id="{$schedule->id}"
+                        onclick="return sure(this)">删除</a>
+                </div>
+            </a>
+            <script type="text/javascript">
+                function sure(that) {
+                    let res = confirm("你确定要删除吗？");
+                    if(res){
+                       return true;
+                    }else {
+                        return res;
+                    }
+
+                }
+            </script>
+            {/volist}
+            <div class="weui-btn-area" style="position: fixed;bottom:70px ;right:5px;z-index:9999;">
+                <a class="weui-btn weui-btn_block weui-btn_primary"
+                   href="{:url('wx_add_schedule_default',['uid'=>$uid,'wxcode'=>$wxcode,'name'=>$name,'number'=>$number])}" id="showTooltips"
+                   style="padding: 0px;font-size: 30px;width: 47px;height: 47px;border-radius: 50%">+</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="__STATIC__/assets/js/vendor/jquery-2.1.4.min.js"></script>
+<script src="__STATIC__/assets/js/popper.min.js"></script>
+<script src="__STATIC__/assets/js/bootstrap.min.js"></script>
+<script src="__STATIC__/assets/js/jquery.matchHeight.min.js"></script>
+<script src="__STATIC__/assets/js/main.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/datatables.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/dataTables.buttons.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.bootstrap.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/jszip.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/vfs_fonts.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.html5.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.print.min.js"></script>
+<script src="__STATIC__/assets/js/lib/data-table/buttons.colVis.min.js"></script>
+<script src="__STATIC__/assets/js/init/datatables-init.js"></script>
+
+</body>
+</html>

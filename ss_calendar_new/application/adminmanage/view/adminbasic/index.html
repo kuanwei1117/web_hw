@@ -1,0 +1,85 @@
+
+
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="col-lg-6 mb-3 d-inline-flex">
+        <button class="btn btn-primary" type="button"><a href="{:url('adminbasic/add')}" style="color:#fff;"><i
+                    class="fa fa-plus"></i>&nbsp; 添加管理员</a></button>
+        <form action="" class="wrap-filter">
+            <select name="status" class="form-control ml-2" id='status'>
+                <option value="-1">请选择状态</option>
+                {volist name="$resp.status_list" id='status'}
+                <option value="{$status.value}" {if condition="$resp['current_status'] eq $status['value']" }
+                    selected {/if}>{$status.status} </option> {/volist} </select> </form> </div> <div
+                    class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong class="card-title">管理员列表</strong>
+                        </div>
+                        <div class="card-body">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">序号</th>
+                                        <th scope="col">名称</th>
+                                        <th scope="col">所属用户组</th>
+                                        <th scope="col">状态</th>
+                                        <th scope="col">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {if condition="count($resp.admin_list) != 0"}
+                                    {volist name="$resp.admin_list" id="admin_list"}
+                                    <tr>
+                                        <th scope="row">{$admin_list.index}</th>
+                                        <td>{$admin_list.username}</td>
+                                        <td>{$admin_list.group_title}</td>
+                                        {if condition="$admin_list['is_delete'] eq 0"}
+                                        <td><span class="badge badge-success">正常</span></td>
+                                        {else /}
+                                        <td><span class="badge badge-warning">已删除</span></td>
+                                        {/if}
+
+                                        <td>
+                                            {if condition="$admin_list.is_delete ==0"}
+                                            <button class="btn btn-primary btn-sm" type="button"><a
+                                                    href="{:url('adminbasic/edit', array('id' => $admin_list['id']))}"
+                                                    style="color:#fff;"><i class="fa fa-pencil"></i>&nbsp;
+                                                    编辑</a></button>
+                                            {/if}
+                                            {if condition="$admin_list.is_delete == 0 && $admin_list.group_id !=1"}
+                                            <button class="btn btn-danger btn-sm" type="button"><a href="#"
+                                                    onclick={if condition="$admin_id == $admin_list['id']"}"warning('欲删除对象为本人帐号，确定要注销本人帐号吗？', '{:url('adminbasic/del', array('id' => $admin_list['id']))}')"{else/}"warning('确实要删除吗', '{:url('adminbasic/del', array('id' => $admin_list['id']))}')"{/if}
+                                                    style="color:#fff;"><i class="fa fa-trash-o"></i>&nbsp;
+                                                    删除</a></button>
+                                            {elseif condition="$admin_list.group_id !=1" /}
+                                            <button class="btn btn-warning btn-sm" type="button"><a href="#"
+                                                    onclick="warning('确实要复原吗', '{:url('adminbasic/recover', array('id' => $admin_list['id']))}')"
+                                                    style="color:#000;"><i class="fa fa-undo"></i>&nbsp;
+                                                    复原</a></button>
+                                            {/if}
+                                        </td>
+                                    </tr>
+                                    {/volist}
+                                    {else /}
+                                    <tr>
+                                        <td colspan="4">暂无数据</td>
+                                    </tr>
+                                    {/if}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+    </div>
+
+</div>
+<!-- /.content -->
+{/block}
+{block name="scripts"}
+<script src="__STATIC__/admin/js/admin/lst.js"></script>
+<script src="__STATIC__/admin/js/admin/beyond.js"></script>
+{/block}

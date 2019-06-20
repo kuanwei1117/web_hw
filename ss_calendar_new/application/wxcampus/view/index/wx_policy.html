@@ -1,0 +1,74 @@
+<!--
+@Author: gunjianpan
+@Date:   2019-05-16 11:01:18
+@Last Modified by:   gunjianpan
+@Last Modified time: 2019-06-06 21:44:58
+-->
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.0/weui.css">
+    <title>添加日程</title>
+    <script>
+        var url = 'http://114.116.99.20/calendar_new/public/index.php/wx/wxpolicy/getpolicy';
+        var req = new XMLHttpRequest();
+        req.open('GET', url, true);
+        req.onreadystatechange = reqCallback;
+        req.send();
+
+        function reqCallback() {
+            if (req.readyState == 4 && req.status == 200) {
+                var response = req.responseText;
+                var jsonObject = eval("(" + response + ")");
+                var policyText = jsonObject.data;
+                var policyDiv = document.getElementById('policyText');
+                policyDiv.innerHTML = policyText;
+            }
+        }
+    </script>
+</head>
+
+<body style="height: 100%; background-color: #ededed">
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area"><i class="weui-icon-info weui-icon_msg"></i></div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">用户协议与隐私保护</h2>
+            <p class="weui-msg__desc policy" id='policyText'></p>
+        </div>
+        <div class="weui-msg__opr-area">
+            <p class="weui-btn-area">
+                <a id='agree' class="weui-btn weui-btn_primary">同意并继续</a>
+                <a href="javascript:history.back();" class="weui-btn weui-btn_default">不同意</a>
+            </p>
+        </div>
+        <div class="weui-msg__extra-area">
+            <div class="weui-footer">
+                <p class="weui-footer__links">
+                    <a href="http://ss.pku.edu.cn" class="weui-footer__link">北京大学软件与微电子学院</a>
+                </p>
+                <p class="weui-footer__text">Copyright &copy; 2019-2019 sspku</p>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+    .policy {
+        width: 300px;
+        margin: 0 auto;
+        font-size: 14px !important;
+        text-align: left;
+    }
+</style>
+<script>
+    var locationHref = document.location.href;
+    var lastString = locationHref.split('name/')[1].split('/');
+    var name = lastString[0];
+    var id = lastString[2].split('.html')[0];
+    document.getElementById("agree").href =
+        `http://sscalendar2019.zhangqx.com/calendar_new/public/index.php/wxcampus/index/index?wxcode=0&name=${name}&number=${id}`;
+</script>
+
+</html>

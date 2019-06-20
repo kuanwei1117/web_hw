@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%;">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/2.0.0/weui.css">
+    <title>我的日程</title>
+    <style>
+        .weui-flex {
+            background-color: #FFFFFF;
+            text-align: center;
+            padding-bottom: 10px;
+
+        }
+
+        .selected-day {
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: auto;
+            margin-bottom: auto;
+            background-color: #07C160;
+            color: #FFFFFF;
+            width: 32px;
+            height: 32px;
+            border-radius: 3px;
+
+        }
+
+        a {
+            color: black;
+            font-size: 17px;
+        }
+
+        .week {
+            color: #9b9b9b;
+            font-size: 15px;
+            font-weight: bolder;
+        }
+
+        .margintop30 {
+            margin-top: 30px;
+        }
+
+        .today-subscript {
+            height: 5px;
+            width: 5px;
+            text-align: center;
+            border-radius: 50%;
+            background-color: #07C160;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .date-title-past {
+            color: #ccc
+        }
+        .date-title-today {
+            color: #07C160
+        }
+        
+        .past-schedule {
+            color: #ccc
+        }
+    </style>
+
+</head>
+<body ontouchstart style="height: 100%; width:100%; background-color: #ededed">
+<div class="weui-tab" style="width: 100%;">
+    <div class="weui-tab__panel" style="width: 100%;">
+        <div style="top: 0px; z-index:9998;width: 100%; height:120px; display:block">
+            <div class="weui-flex" style="padding-top: 10px; width: 100%; height:30px">
+
+                <div class="weui-flex__item" style="width:50px; display:block">
+                    <div class="placeholder" style="text-align: left; margin-left: 21px; color: #07C160">
+                        <a href="{$left}">
+                            <img src="__STATIC__/wx/img/before.png" style="height: 17px" id="left">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="weui-flex__item" style="width:200px; ">
+                    <div class="placeholder" style="font-size: 18px; width:200px;" id="date-title"> </div>
+
+                    <!--
+           			<div id="date_choose" style="z-index:9999;border-radius: 10%;visibility:hidden; "> 
+           				<input id="date_input" style="text-align:center;width:90px" value="{$date}">
+           			</div>
+                -->
+    				
+
+                </div>
+            <!--    
+                <div id="date_identification"  style="height: 12px;width: 12px;text-align:center; margin-left: auto;margin-right: auto;position:relative;top:2px; z-index:9999; visibility:visible;"> 
+                	<img src="__STATIC__/wx/img/date.png" id="date_select" style="position:relative;top:1px; height: 20px; visibility: visible" onclick="ChooseDate()">
+                	<img src="__STATIC__/wx/img/tick.jpg" id="date_ok" style="position:relative;top:1px; height: 15px; visibility: hidden" onclick="ChooseOk()">
+                </div>
+            -->
+                <div class="weui-flex__item" style="width:20%; ">
+                    <div class="placeholder" style="text-align: right; margin-right: 21px; color: #07C160">
+                        <a href="{$right}">
+                            <img src="__STATIC__/wx/img/after.png" style="height: 17px" id="right">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-flex week">
+                <div class="weui-flex__item">
+                    <div class="placeholder0"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder1"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder2"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder3"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder4"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder5"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder6"><a href="#"></a></div>
+                </div>
+            </div>
+            <div class="weui-flex days" id="calendar">
+                <div class="weui-flex__item" >
+                    <div class="placeholder calendar-item0"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder calendar-item1"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder calendar-item2"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder calendar-item3"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder calendar-item4"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder calendar-item5"><a href="#"></a></div>
+                </div>
+                <div class="weui-flex__item">
+                    <div class="placeholder calendar-item6"><a href="#"></a></div>
+                </div>
+            </div>
+        </div>
+
+        {volist name="cells" id="cell"}
+        <div class="weui-cells">
+            <div class="weui-panel__hd {$cell.class}" style="padding: 10px 16px 10px;">
+                <div style="width: 4px;height: 15px;background-color:#FA5151;display:inline-block;vertical-align:middle;margin: 0 10px 3px 10px"></div>
+                {$cell.date}
+            </div>
+            {volist name="cell['data']" id="vo"}
+            <div class="weui-panel__bd">
+                <a href="{$vo.url}"
+                   class="weui-media-box weui-media-box_appmsg"
+                   style="padding: 10px;margin-left: 15px">
+                    <div>
+                        <img style="width: 14px;height: 14px;padding:2px 10px 18px 0px"
+                             src="__STATIC__/wx/img/dian.png">
+                    </div>
+                    <div class="weui-media-box__bd">
+                        <h4 class="weui-media-box__title {$vo.class}">{$vo.item}  {$vo.time}</h4>
+                        <p class="weui-media-box__desc {$vo.class}">{$vo.note}</p>
+                    </div>
+
+                    <div class="weui-cell__ft">
+                        <div class="{$vo.class}"style="margin-top: 0 ">{$vo.place}</div>
+                    </div>
+                    <div style="display: none;">
+                        <input class="id-area" value="{$vo.id}">
+                    </div>
+                </a>
+            </div>
+            {/volist}
+        </div>
+        {/volist}
+        <div class="weui-btn-area" style="position: fixed;bottom:70px ;right:5px;z-index:9999;">
+        <a class="weui-btn weui-btn_block weui-btn_primary"
+            href="{:url('createPage', ['userid' => $userid, 'date' => $date])}" id="showTooltips"
+            style="padding: 0px;font-size: 30px;width: 47px;height: 47px;border-radius: 50%">+</a>
+        </div>
+    </div>
+{include file="../application/wxcampus/view/index/nav.html"}
+</div>
+
+<div style="display: none;">
+    <div id="dot" style="height: 5px;width: 5px;text-align:center;border-radius: 50%; background-color:  #07C160;display: block;margin-left: auto;margin-right: auto"></div>
+    <div id='triangle' style=" 
+    display: block;margin-left: auto;margin-right: auto
+    border-bottom: 6px solid #87CEFA;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;"">
+    </div>
+    <input id="date" value="{$date}">
+    <input id="date_now" value="{$date_now}">
+    <input id="userid" value="{$userid}">
+    <input id="url" value="{:url('WxCalendar/Index',[],'')}">
+</div>
+</body>
+{literal}
+<script src="__STATIC__/assets/js/vendor/jquery-2.1.4.min.js"></script>
+<script>
+$(document).ready(function(){
+function setCalendarItem(date, curWhich){
+    if(typeof date == 'string'){
+        date = new Date(date);
+    }
+    var which = date.getDay();//星期几
+    var day = date.getDate();//日期
+    var params = {
+        'date':  date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(),
+        'userid': $('#userid').val()
+    }
+    var url = $('#url').val() + '?' + $.param(params);
+    //console.log('url:' + url);
+
+    date_now = new Date($("#date_now").val());
+    date_now_str =date_now .getFullYear() + '-' + (date_now .getMonth()+1) + '-' + date_now .getDate();
+    console.log(params.date)
+    console.log(date_now_str)
+
+
+    //var offset = (10 - curWhich + which)%7;
+    var offset = which;
+    //console.log("posi:" + offset)
+    var item = $('.calendar-item' + offset).find('a');
+    //var item = $('.calendar-item').eq(which).find('a');
+    //console.log("day:" + day)
+
+
+    item.text(day);
+    item.attr('href', url);
+
+    if(params.date == date_now_str)
+	{
+		item.attr('style', "color:red");
+	}
+	else
+	{
+		item.attr('style', "color:black");
+	}
+    //item.attr('style', "color:red");
+    var item = $('.placeholder' + offset).find('a');
+    item.text(transformDay(which));
+    item.attr('href', url);
+
+    if(params.date == date_now_str)
+	{
+		item.attr('style', "color:red");
+	}
+	else
+	{
+		item.attr('style', "color:black");
+	}
+};
+
+function setCalendar(curDateStr){
+    var curDate = new Date(curDateStr);
+    //console.log(curDate)
+    var which = curDate.getDay();
+
+    for(i=(-1)*which; i<7-which; i++)
+    {
+        var date = new Date(curDate);
+        //console.log("curdate: " + date.getDate())
+        //console.log("curday: " + date.getDay())
+        var offset = i;
+        //var offset = i - which;
+        //console.log(date.getDate())
+        date.setDate(date.getDate() + offset);
+
+        setCalendarItem(date, which);
+        //console.log("date:" + date);
+        //console.log("day:" + date)
+
+        if(i === 0){
+            var item = $('.calendar-item' + which).find('a');
+            item.after($('#dot'));
+        }
+    }
+};
+
+function transformDay(day){
+	//console.log(day)
+	switch(day) {
+     case 0:
+ 		return "日";
+        break;
+     case 1:
+ 		return "一";
+        break;
+     case 2:
+ 		return "二";
+        break;
+     case 3:
+ 		return "三";
+        break;
+     case 4:
+ 		return "四";
+        break;
+     case 5:
+ 		return "五";
+        break;
+     default:
+        return "六";
+	} 
+
+};
+setCalendar($('#date').val());
+function display_date()
+{
+    var curDateStr = $("#date").val();
+    var curDate = new Date(curDateStr);
+    var curWeekSun = new Date(curDateStr);
+    var curWeekSat = new Date(curDateStr);
+    var which = curDate.getDay();
+
+    curWeekSun.setDate(curDate.getDate() - which);
+    curWeekSat.setDate(curDate.getDate() + 6 - which);
+    //console.log(curWeekSun)
+    var curWeekSunstr = curWeekSun.getFullYear() + '-' + (curWeekSun.getMonth()+1) + '-' + curWeekSun.getDate()
+    var curWeekSatstr = curWeekSat.getFullYear() + '-' + (curWeekSat.getMonth()+1) + '-' + curWeekSat.getDate()
+
+    
+    document.getElementById("date-title").innerHTML = curWeekSunstr + "      -      " + curWeekSatstr;
+    //document.getElementById("date-title").style.width = "200px";
+}
+display_date();
+
+//console.log("date:" + $('#date').val());
+});
+
+function ChooseDate(){
+	document.getElementById("date_choose").style.visibility = "visible";
+	document.getElementById("date_ok").style.visibility = "visible";
+	document.getElementById("date_select").style.visibility = "hidden";
+};
+function ChooseOk(){
+	document.getElementById("date_choose").style.visibility = "hidden";
+	document.getElementById("date_ok").style.visibility = "hidden";
+	document.getElementById("date_select").style.visibility = "visible";
+
+	var user_input = document.getElementById("date_input").value
+	var arr = user_input.split("-");
+	//console.log(arr.length)
+	if(arr.length != 3)
+	{
+		alert("非法输入！")
+		return ;	
+	}
+	
+	if(arr[0].length > 4)
+	{
+		alert("非法输入！")
+		return ;
+	}
+	else if(arr[1].length > 4)
+	{
+		alert("非法输入！")
+		return ;
+	}
+	else if(arr[2].length > 4)
+	{
+		alert("非法输入！")
+		return ;
+	}
+
+	var date = new Date(user_input);
+	var params = {
+        'date':  date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(),
+        'userid': $('#userid').val()
+    }
+
+	url = $('#url').val() + '?' + $.param(params);
+	console.log('url:' + url);
+
+	if(url.indexOf("NaN") != -1)
+	{
+		alert("非法输入！")
+		return ; 
+	}
+
+	window.location.href= url
+
+};
+</script>
+{/literal}
+</html>
+

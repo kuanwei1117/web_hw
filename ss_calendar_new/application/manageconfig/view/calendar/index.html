@@ -1,0 +1,398 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="input-group">
+                            <h4 class="box-title">
+                                默认日程&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </h4>
+                            <div class="input-group-addon">
+                                用户:
+                            </div>
+                            <input type="text" id="uname-search" placeholder="用户姓名/工号" class="form-control" style="max-width:180px" value="{$uname}">
+                            <button type="button" id="search" class="btn btn-success" style="margin:0 10px 0 10px;" onclick="getUserDefaultSchedules()">搜索</button>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#smallmodal1">添加默认日程</button>
+                        </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                <tr>
+                                    <th class="serial">序号</th>
+                                    <th>姓名</th>
+                                    <th>身份</th>
+                                    <th>时间</th>
+                                    <th>地点</th>
+                                    <th>事项</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {volist name="defaultSchedules" id="defaultSchedule" key="key"}
+                                <tr class="data-row">
+                                    <td class="serial">{$key}</td>
+                                    <td>  <span class="product">{$defaultSchedule->getUserName()}</span> </td>
+                                    <td>  <span class="product">{$defaultSchedule->getPosition()}</span> </td>
+                                    <td>  <span class="product">{$defaultSchedule->getDay().$defaultSchedule->getTime()}</span> </td>
+                                    <td>  <span class="product">{$defaultSchedule->getPlace()}</span> </td>
+                                    <td>  <span class="product">{$defaultSchedule->getItem()}</span> </td>
+                                    <td>  <span class="product">{$defaultSchedule->note}</span> </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm mb-1" data-id="{$defaultSchedule.id}" onclick='editId(this)' data-toggle="modal" data-target="#smallmodal">
+                                            <i class="fa fa-magic"></i>&nbsp;编辑
+                                        </button>
+
+                                        <button type="button" class="btn btn-danger btn-sm mb-1" data-id="{$defaultSchedule.id}"  onclick='deleteId("{$defaultSchedule.id}","{$defaultSchedule->getPlace()}","{$defaultSchedule->getItem()}")' data-toggle="modal" data-target="#smamodal">
+
+                                            <i class="fa fa-exclamation"></i>&nbsp;删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                {/volist}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="smamodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title">是否要删除？</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-check-square-o"></i>
+                                    </div>
+                                    <input id="deleteNewId" type="text" name="username" value="edit" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <input type="text" id="deleteNewPlace" name="deleteNewPlace" placeholder="修改地点" class="form-control"  disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <input type="text" id="deleteNewItem" name="deleteNewItem" placeholder="修改事项" class="form-control"  disabled="disabled">
+                                </div>
+                            </div>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+
+                            <button type="button" id="deleteIdBtn" class="btn btn-success"  onclick="deleteDefaultSchedule()">确认</button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">编辑事项</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-check-square-o"></i>
+                                    </div>
+                                    <input id="editNewId" type="text" name="username" value="edit" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <!--input type="text" id="addNewPlace" name="addNewPlace" placeholder="地点" class="form-control"-->
+                                    <select name="select2" id="editNewPlace" aria-controls="bootstrap-data-table" class="form-control form-control-sm">
+                                        {volist name="places" id="place" empty="没有可选的地点列表，请联系管理员"}
+                                        <option value="{$place['name']}">{$place['name']}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <!--input type="text" id="addNewItem" name="addNewItem" placeholder="事项"-->
+                                    <select name="select2" id="editNewItem" aria-controls="bootstrap-data-table" class="form-control form-control-sm">
+                                        {volist name="items" id="item" empty="没有可选的事项列表，请联系管理员"}
+                                        <option value="{$item['name']}">{$item['name']}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <input type="text" id="editNewNote" name="editNewNote" placeholder="修改备注" class="form-control">
+                                </div>
+                            </div>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" id="editIdBtn" class="btn btn-success" onclick="editDefaultSchedule(this)">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="smallmodal1" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="scrollmodalLabel">添加事项</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-check-square-o"></i>
+                                    </div>
+                                    <input type="text" id="addNewUser" name="uname" class="form-control" placeholder="用户姓名/工号" value={$uname}>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <select id="addNewDay" name="addNewDay" aria-controls="bootstrap-data-table" class="form-control form-control-sm">
+                                        <option value="1">周一</option>
+                                        <option value="2">周二</option>
+                                        <option value="3">周三</option>
+                                        <option value="4">周四</option>
+                                        <option value="5">周五</option>
+                                        <option value="6">周六</option>
+                                        <option value="7">周日</option>
+                                    </select>
+                                    <select id="addNewTime" name="addNewTime" aria-controls="bootstrap-data-table" class="form-control form-control-sm">
+
+                                        {volist name="times" id="time" empty="没有可选的时间列表，请联系管理员"}
+                                        <option value="{$time['name']}">{$time['name']}</option>
+                                        {/volist}
+                                        <!--option value="上午">上午</option>
+                                        <option value="下午">下午</option>
+                                        <option value="晚上">晚上</option-->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <!--input type="text" id="addNewPlace" name="addNewPlace" placeholder="地点" class="form-control"-->
+                                    <select name="select2" id="addNewPlace" aria-controls="bootstrap-data-table" class="form-control form-control-sm">
+                                        {volist name="places" id="place" empty="没有可选的地点列表，请联系管理员"}
+                                        <option value="{$place['name']}">{$place['name']}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <!--input type="text" id="addNewItem" name="addNewItem" placeholder="事项"-->
+                                    <select name="select2" id="addNewItem" aria-controls="bootstrap-data-table" class="form-control form-control-sm">
+                                        {volist name="items" id="item" empty="没有可选的事项列表，请联系管理员"}
+                                        <option value="{$item['name']}">{$item['name']}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <textarea type="text" id="addNewNote" name="addNewNote" placeholder="备注" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button type="button" id="addDefaultSchedule" class="btn btn-success" onclick="addDefaultSchedule()">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- /.content -->
+{/block}
+{block name="scripts"}
+<script>
+    $("#uname-search").bind('keyup',function (event) {
+        if(event.keyCode=='13'){
+            getUserDefaultSchedules();
+        }
+    })
+    function getUserDefaultSchedules() {
+        var user=$("#uname-search").val();
+        window.location.href="{:url('index')}?user="+user;
+    }
+
+    /**添加默认事项，使用ajax向addDefaultSchedule方法发送请求*/
+    function addDefaultSchedule(){
+        var user = $('#addNewUser').val();
+        var day = $('#addNewDay').val();
+        var time =  $('#addNewTime').val();
+        var place = $('#addNewPlace').val();
+        var note = $('#addNewNote').val();
+        if (user.trim().length == 0) {
+            alert('请输入用户名');
+            return 1;
+        }
+        if (place.trim().length == 0) {
+            alert('请输入地点');
+            return 1;
+        }
+        var item = $('#addNewItem').val();
+        if (item.trim().length == 0) {
+            alert('请输入事项');
+            return 1;
+        }
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: "{:url('Calendar/addDefaultSchedule')}",
+            data: {"user":user,"day":day,"time":time,"place": place,"item":item,"note":note },
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 1) {
+                    alert('添加成功');
+                    //document.getElementById('smallmodal1').style.display = 'none';
+                    window.location.reload();
+                }
+                else{
+                    alert('添加失败：' + data.msg);
+                }
+            }
+        });
+    }
+
+function deleteId(id,place,item) {
+
+    $('#deleteNewId').attr('value', id)
+    $('#deleteNewPlace').attr('value', place)
+    $('#deleteNewItem').attr('value', item)
+
+}
+    function deleteDefaultSchedule(){
+        var id = $('#deleteNewId').val();
+        var place = $('#deleteNewPlace').val();
+        var item = $('#deleteNewItem').val();
+
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: "{:url('Calendar/deleteDefaultSchedule')}",
+            data: {"id": id },
+            dataType: "json",
+            success: function(data){
+                if (data.code == 1) {
+                    alert('删除成功');
+                    window.location.reload();
+                }
+                else{
+                    alert('删除失败：' + data.msg);
+                }
+            }
+        });
+
+    }
+
+
+  
+  function editId(data){
+    var id = $(data).attr('data-id');
+    $('#editIdBtn').attr('data-id', id);
+  }
+  
+
+
+    function editDefaultSchedule(data){
+
+        var id = $(data).attr('data-id');
+        var place = $('#editNewPlace').val();
+        var note = $('#editNewNote').val();
+        if (place.trim().length == 0) {
+            alert('请输入地点');
+            return 1;
+        }
+        var item = $('#editNewItem').val();
+        if (item.trim().length == 0) {
+            alert('请输入事项');
+            return 1;
+        }
+        if (note.trim().length == 0){
+            alert('请输入备注');
+            return 1;
+        }
+        $.ajax({
+            type: "POST",
+            async: false,
+            url: "{:url('Calendar/editDefaultSchedule')}",
+            data: {"id": id,"place": place,"item":item, "note":note },
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 1) {
+                    alert('修改成功');
+                    window.location.reload();
+                }
+                else{
+                    alert('修改失败：' + data.msg);
+                }
+            }
+        });
+    }
+</script>
+{/block}

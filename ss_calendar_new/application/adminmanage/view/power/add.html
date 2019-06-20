@@ -1,0 +1,56 @@
+
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="col-lg-12">
+                  <div class="card">
+                      <div class="card-header">
+                          <strong>管理员管理</strong> 添加权限
+                      </div>
+                      <div class="card-body card-block">
+                          <form class="form-horizontal" action="" enctype="multipart/form-data" method="post">
+
+                              <div class="row form-group">
+                                  <div class="col col-md-3"><label class=" form-control-label" for="admin_name">上级权限</label></div>
+                                  <div class="col-12 col-md-9">
+                                    <select class="form-control" name="pid">
+                                      <option value="0">顶级权限</option>
+                                      {volist name="auth_rule_list" id="auth_rule"}
+                                      <option value="{$auth_rule.id}"><?php if($auth_rule['level'] != 0){echo '|';} echo str_repeat('—', $auth_rule['level']*3)?>{$auth_rule.title}</option>
+                                      {/volist}
+                                    </select>
+                                    <small class="form-text text-muted">*必填</small>
+                                  </div>
+
+                              </div>
+
+                              <div class="row form-group">
+                                  <div class="col col-md-3"><label class=" form-control-label" for="title">权限名称</label></div>
+                                  <div class="col-12 col-md-9"><input name="title" class="form-control" id="titlr" type="text" placeholder=""><small class="form-text text-muted">*必填</small></div>
+                              </div>
+
+                              <div class="row form-group">
+                                  <div class="col col-md-3"><label class=" form-control-label" for="name">控制器 / 方法</label></div>
+                                  <div class="col-12 col-md-9"><input name="name" class="form-control" id="name" type="text" placeholder=""><small class="form-text text-muted">*必填</small></div>
+                              </div>
+
+                              <button class="btn btn-primary btn-sm" type="submit">
+                                  <i class="fa fa-dot-circle-o"></i> 确认创建
+                              </button>
+
+                          </form>
+                      </div>
+                      <div class="card-footer">
+
+
+                      </div>
+                  </div>
+
+              </div>
+  </div>
+<!-- /.content -->
+{/block}
+{block name="scripts"}
+<script src="__STATIC__/admin/js/admin/beyond.js"></script>
+{/block}

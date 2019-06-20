@@ -1,0 +1,302 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">日程时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#smallmodal1">添加时间</button> 
+                        </h4>                        
+                    </div>
+
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="serial">序号</th>
+                                        <th style="display:none">时间id</th>
+                                        <th>时间描述</th>
+                                        <th>优先级</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="list_time_table" id="vo"}
+                                    <tr>
+                                        <td class="serial">{$i}</td>            
+                                        <td style="display:none">  <span>{$vo->id}</span> </td>
+                                        <td>  <span class="product"><span>{$vo->name}</span> </td>
+                                        <td>  <span class="product"><span>{$vo->time_order}</span> </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-sm mb-1" data-toggle="modal" data-target="#smallmodal">
+                                                <i class="fa fa-magic"></i>&nbsp;编辑
+                                            </button> 
+                                            <button type="button" class="btn btn-danger btn-sm mb-1"
+                                            data-toggle="modal" data-target="#smallmodaldelete" >
+                                            <i class="fa fa-exclamation"></i>&nbsp;删除
+                                        </button>  
+                                        </td>                                             
+                                    </tr>
+                                {/volist}                                 
+                            </tbody>                                
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+         <div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="display: inline" id="scrollmodalLabel">编辑时间</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        <div style="display:none" class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-check-square-o"></i>
+                                                </div>
+                                                <input type="text" id="time_id_change" name="username" value="" class="form-control" disabled="disabled"> 
+                                            </div>                                              
+                                        </div>  
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </div>
+                                                <input type="number" id="time_order_change" name="username" value="" class="form-control">
+                                            </div>                                              
+                                        </div> 
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </div>
+                                                <input type="text" id="time_name_change" name="username" value="" class="form-control">
+                                            </div>                                              
+                                        </div>        
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-success" id="confirmchange">确认</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="modal fade" id="smallmodal1" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="display: inline" id="scrollmodalLabel">添加时间</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </div>
+                                                <input type="number" id="time_order_add" name="timeorder" value="" class="form-control" placeholder="优先级(1,2,3…1优先级最高)">
+                                            </div>                                              
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </div>
+                                                <input type="text" id="time_name_add" name="username" placeholder="时间描述" class="form-control">
+                                            </div>                                              
+                                        </div>        
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-success" id="confirmadd">确认</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    <div class="modal fade" id="smallmodaldelete" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" style="display: inline" id="scrollmodalLabel">删除时间</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        <div style="display:none" class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-check-square-o"></i>
+                                                </div>
+                                                <input type="text" id="time_id_delete" name="username" value="16" class="form-control" disabled="disabled"> 
+                                            </div>                                              
+                                        </div>   
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </div>
+                                                <input type="text" id="time_name_delete" name="username" placeholder="时间描述" class="form-control" disabled="disabled">
+                                            </div>                                              
+                                        </div>        
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-success" id="confirmdelete">确认删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+    </div>
+   
+</div>
+<!-- /.content -->
+{/block}
+
+{block name="scripts"}
+   <script type="text/javascript">
+        // 修改时间段描述 模态框
+        $('#smallmodal').on('show.bs.modal', function (event) {
+      var btnThis = $(event.relatedTarget); //触发事件的按钮
+      var modal = $(this);  //当前模态框
+      var modalId = btnThis.data('id');   //解析出data-id的内容
+      var id = btnThis.closest('tr').find('td').eq(1).text();
+      var content = $.trim(btnThis.closest('tr').find('td').eq(2).text());
+      var order = btnThis.closest('tr').find('td').eq(3).text();
+      console.log(order);
+      modal.find('#time_id_change').val(id);      
+      modal.find('#time_name_change').val(content);      
+      modal.find('#time_order_change').val(parseInt(order));      
+  });
+
+        // 确认修改ajax
+        $("#confirmchange").click(function(){
+          //先略过不合法输入,只做trim处理
+          var timeid = $.trim($('#time_id_change').val());
+          var timename = $.trim($('#time_name_change').val());
+          var timeorder = $.trim($('#time_order_change').val());
+          if(timename.length === 0 || timeorder.length === 0)
+          {
+            alert('输入不能为空');
+            return;
+        }
+
+        if(timename.length>20)
+          {
+            alert('输入不能为空超过20个字符');
+            return;
+        }
+
+        
+        // if (timename.match([\\*,\\&,\\\\,\\/,\\?,\\|,\\:,\\<,\\>])) {
+        //     alert('时间段描述不能包含下列字符之一:\n \\ / : * ? \" < > | & ,');
+        //     return;
+        // }
+        
+
+        if (!(timeorder+"").match(/^\d+$/)) {
+            alert('优先级必须为整数');  
+            return;
+        }        
+        console.log(timeid);
+        console.log(timeorder);
+        console.log(timename);
+          //post方法修改
+          $.post("{:url('time/timeChange')}",
+          {
+            id:timeid,
+            name:timename,
+            order:timeorder
+        },
+        function(data,status){
+            if(data == "更新成功")
+                location.reload();
+            else
+                alert(data);
+        });
+      });
+
+       // 删除时间段描述模态框
+       $('#smallmodaldelete').on('show.bs.modal', function (event) {
+      var btnThis = $(event.relatedTarget); //触发事件的按钮
+      var modal = $(this);  //当前模态框
+      var modalId = btnThis.data('id');   //解析出data-id的内容
+      var id = btnThis.closest('tr').find('td').eq(1).text();
+      var content = $.trim(btnThis.closest('tr').find('td').eq(2).text());
+      modal.find('#time_id_delete').val(id);      
+      modal.find('#time_name_delete').val(content);      
+  });
+
+         // 确认删除ajax
+         $("#confirmdelete").click(function(){
+          //先略过不合法输入,只做trim处理
+          var timeid = $('#time_id_delete').val();
+          var timename = $.trim($('#time_name_delete').val());
+          console.log(timeid);
+          console.log(timename);
+          //post方法修改
+          $.post("{:url('time/timeDelete')}",
+          {
+            id:timeid,
+            name:timename
+        },
+        function(data,status){
+            if(data == "删除成功")
+                location.reload();
+            else
+                alert("删除失败，重新操作");
+        });
+      });
+
+        // 确认新增ajax
+        $("#confirmadd").click(function(){
+          //先略过不合法输入,只做trim处理
+          var timename = $.trim($('#time_name_add').val());
+          var timeorder = $.trim($('#time_order_add').val());                   
+          console.log(timename);
+          console.log(timeorder); 
+          if(timename.length === 0 || timeorder.length === 0)
+          {
+            alert('输入不能为空');
+            return;
+        }
+        if (!(timeorder+"").match(/^\d+$/)) {
+            alert('优先级必须为整数');  
+            return;
+        }        
+          //post方法修改
+          $.post("{:url('time/timeAdd')}",
+          {
+            name:timename,
+            order:timeorder
+        },
+        function(data,status){
+            if(data == "更新成功")
+                location.reload();
+            else
+                alert(data);
+        });
+      });
+  </script>
+
+{/block}

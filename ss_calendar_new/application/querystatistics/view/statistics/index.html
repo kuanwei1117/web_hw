@@ -1,0 +1,54 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+<div class="content">
+    <div class="animated fadeIn">                
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                  	<div class="card-body">
+                  		<h4 class="box-title">日程统计&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                   			<a href="{:url('querystatistics/user_not_update/index')}" class="btn btn-success btn-sm"  >未更新日程用户</a> 
+                     	</h4>
+     			   	</div>
+                    <div class="card-body--">
+                        <div class="table-stats">
+                            <table id="bootstrap-data-table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="serial">序号</th>
+                                        <th>姓名</th>
+                                        <th>所属部门</th>
+                                        <th>职位</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {notempty name="arealist"}
+                                    {foreach name="arealist" item="arealist"}
+                                    <tr>
+                                        <td class="serial">{$key+1}</td> 
+                                        <td><span class="product">{$arealist['name']}</span></td>
+                                        <td><span class="product">{$arealist['depart_name']}</span></td>
+                                        <td><span class="product">{$arealist['user_posname']}</span></td>
+                                        <td>
+                                            <a href="{:url('querystatistics/statistics/statisticsFun')}?id={$arealist.id}">
+                                            <button type="button" class="btn btn-primary btn-sm mb-1"  data-id="{$arealist.id}" data-toggle="modal">
+                                                <i class="fa fa-magic"></i>&nbsp;统计
+                                            </button></a>                                                                            
+                                        </td>                                             
+                                    </tr> 
+                                    {/foreach}
+                                {/notempty}                     
+                                </tbody>                                
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- .animated -->
+</div>
+<!-- /.content -->
+{/block}

@@ -1,0 +1,303 @@
+{extend name="common@public/base" /}
+{block name="main-content"}
+<!-- Content -->
+ <div class="content">
+            <div class="animated fadeIn">                
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                 <h4 class="box-title">日程地点&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button type="submit" class="btn btn-success btn-sm" data-toggle="modal" data-target="#smallmodal1">添加地点</button> 
+                                 </h4>
+                            </div>
+                            <div class="card-body--">
+                                <div class="table-stats">
+                                    <table id="bootstrap-data-table" class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="serial">序号</th>
+                                                
+                                                <th>地点描述</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead> 
+                                        <tbody>
+                                        {notempty name="arealist"}
+                                            {foreach name="arealist" item="arealist"}
+                                            <tr>
+                                                <td class="serial">{$key+1}</td>
+                                                
+                                                <td>  <span class="product">{$arealist['name']}</span></td>
+                                                {eq name="$arealist['is_delete']" value="0"}
+	                                                <td>
+	                                                	运作
+	                                                </td>
+	                                                <td>
+	                                                    <button type="button" class="btn btn-primary btn-sm mb-1" data-id="{$arealist.id}" data-des="{$arealist.name}" onclick='editArea(this)' data-toggle="modal" data-target="#smallmodal">
+	                                                        <i class="fa fa-magic"></i>&nbsp;编辑
+	                                                    </button>
+	                                                    <a href="{:url('manageconfig/Place/index')}">
+	                                                    <button type="button" class="btn btn-danger btn-sm mb-1"  data-id="{$arealist.id}" onclick='delectArea(this)' data-toggle="modal">
+	                                                        <i class="fa fa-exclamation"></i>&nbsp;删除
+	                                                    </button></a>                                                                            
+	                                                </td>
+                                                {/eq}       
+                                                {eq name="$arealist['is_delete']" value="1"}
+	                                                <td>
+	                                                	作废
+	                                                </td>
+	                                                <td>
+	                                                <a href="{:url('manageconfig/Place/index')}">
+	                                                    <button type="button" data-id="{$arealist.id}" onclick='recoverPlace(this)' class="btn btn-recover btn-sm mb-1" >
+	                                                    <i class="fa fa-rotate-left"></i>&nbsp;恢复</button></a>
+	                                                </td>
+                                                {/eq}                                  
+                                            </tr> 
+                                            {/foreach}
+                                        {/notempty}                     
+                                        </tbody>                                
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="scrollmodalLabel">编辑地点</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>  
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </div>
+                                                <input type="text" id="editArea" name="username" value="" class="form-control">
+                                            </div>                                              
+                                        </div>        
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    
+                                    <a href="{:url('manageconfig/Place/index')}"><button id='editAreaBtn' onclick="changeArea(this)" type="button" class="btn btn-success">确认</button></a>
+                                    <!--
+                                    <button id='editAreaBtn' onclick="changeArea(this)" type="button" class="btn btn-success">确认</button>
+                                -->
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="modal fade" id="smallmodal1" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="scrollmodalLabel">添加地点</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>   
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </div>
+                                                <input type="text" id="addNewAreaName" name="username" placeholder="地点描述" class="form-control">
+                                            </div>                                         
+                                        </div>        
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    
+                                    <a href="{:url('manageconfig/Place/index')}"><button id='addNewArea' type="button" class="btn btn-success">确认</button></a>
+                                
+                                    <!--
+                                    <button id='addNewArea' type="button" class="btn btn-success">确认</button>
+                               -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" id="makeSureModal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="scrollmodalLabel">确认框</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>   
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-pencil-square-o">是否继续？</i>
+                                                </div>
+                                                
+                                            </div>                                         
+                                        </div>        
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                    <a href="{:url('manageconfig/Place/index')}"><button id='addNewArea' type="button" class="btn btn-success">确认</button></a>
+                                    <!--
+                                    <button id='addNewArea' type="button" class="btn btn-success">确认</button>
+                                -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- .animated -->
+        </div>
+<!-- /.content -->
+<script src='__STATIC__/assets/js/vendor/jquery-2.1.4.min.js'></script>
+<script type="text/javascript">
+
+        $(function(){
+            myclick();
+        })
+        
+
+        //编辑地点信息
+        function editArea(data){
+            var id = $(data).attr('data-id');
+            var area = $(data).attr('data-des');
+            $('#editArea').val(area);
+            $('#editAreaBtn').attr('data-id',id);
+        }
+
+        //修改地点信息
+        function changeArea(data){
+            var id = $(data).attr('data-id');
+            var area = $('#editArea').val();
+            //alert(area);
+            if(area.trim().length > 10){
+                alert('不能超过10个字符');
+                return 0;
+            }else if(area.trim().length == 0){
+                alert('请输入字符');
+                return 0;
+            }else if(area.trim() == 'null'){
+                alert('请输字符不合法');
+                return 0;
+            }
+        var r=confirm("是否继续？")
+          if (r==true){
+            $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "{:url('manageconfig/place/changeArea')}",
+                    data: {id:id,area:area,},
+                    dataType: "json",
+                    success: function(data){
+                        if(data == 0)
+                            alert('修改成功');
+                        else if(data == 1)
+                            alert('修改失败');
+                        else if(data == 3)
+                            alert('地点重复');
+                    }
+                });
+            }
+        }
+
+        //删除一个地点
+        function delectArea(data){
+            var id = $(data).attr('data-id');
+            //alert(id);
+          var r=confirm("是否继续？")
+          if (r==true){
+            $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "{:url('manageconfig/place/deleteArea')}",
+                    data: {id:id,},
+                    dataType: "json",
+                    success: function(data){
+                        if(data == 0)
+                            alert('删除成功');
+                        else
+                            alert('删除失败');
+                    }
+                });
+        }
+        }
+		
+        //恢复一个地点
+        function recoverPlace(data){
+        	var id = $(data).attr('data-id');
+            //alert(id);
+          var r=confirm("是否继续？")
+          if (r==true){
+            $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "{:url('manageconfig/place/recoverArea')}",
+                    data: {id:id,},
+                    dataType: "json",
+                    success: function(data){
+                        if(data == 0)
+                            alert('恢复成功');
+                        else
+                            alert('恢复失败');
+                    }
+                });
+        }
+        }
+        
+        function myclick(){
+            //添加一个地点，确认按钮
+            $('#addNewArea').click(function(){
+                var area = $('#addNewAreaName').val();
+                //alert(area);
+                if(area.trim().length > 10){
+                    alert('不能超过10个字符');
+                    return 0;
+                }else if(area.trim().length == 0){
+                    alert('请输入字符');
+                    return 0;
+                }else if(area.trim() == 'null'){
+                    alert('请输字符不合法');
+                    return 0;
+                }
+          var r=confirm("是否继续？")
+          if (r==true){
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: "{:url('manageconfig/place/addNewArea')}",
+                    data: {areaName:area,},
+                    dataType: "json",
+                    success: function(data){
+                        if(data == 0)
+                            alert('添加成功');
+                        else if(data == 1)
+                            alert('添加失败');
+                        else if(data == 3)
+                            alert('地点重复');
+                    }
+                });
+            }
+            })
+
+            
+        }
+    </script>
+{/block}
